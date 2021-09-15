@@ -1,3 +1,5 @@
+// Some code was referenced from tut08.
+
 const { Sequelize, DataTypes } = require("sequelize");
 const config = require("./config.js");
 
