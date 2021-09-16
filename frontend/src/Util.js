@@ -1,3 +1,6 @@
+const USER_KEY = "user";
+
+
 // --- Helper functions to interact with local storage --------------------------------------------
 function setUser(user) {
   localStorage.setItem(USER_KEY, JSON.stringify(user));
