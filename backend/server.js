@@ -14,16 +14,16 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
-    res.json({ message: "Hello World!" });
+    res.json({ message: "VibeCheck API says hello!" });
   });
 
 
 // Add routes
 require("./src/routes/user.routes.js")(express, app);
 require("./src/routes/post.routes.js")(express, app);
-
+//TODO add routes.
 // Set port, listen for requests.
 const PORT = 4000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+  console.log(`Server is running at - http://localhost:${PORT}.`);
 });

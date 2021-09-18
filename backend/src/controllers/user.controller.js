@@ -24,6 +24,7 @@ exports.login = async (req, res) => {
     res.json(null);
   else
     res.json(user);
+    //TODO track activity here ?
 };
 
 // Create a user in the database.

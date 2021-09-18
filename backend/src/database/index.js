@@ -16,18 +16,51 @@ db.sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
 // Include models.
 db.user = require("./models/user.js")(db.sequelize, DataTypes);
 db.post = require("./models/post.js")(db.sequelize, DataTypes);
+db.userFollows = require("./models/userFollows.js")(db.sequelize, DataTypes);
+db.postReaction = require("./models/postReaction.js")(db.sequelize, DataTypes);
 
 // Relate post and user.
 db.post.belongsTo(db.user, {
   foreignKey: { name: "username", allowNull: false },
 });
 
+// Relate postReactions with user and post.
+db.postReaction.belongsTo(db.user, {
+  foreignKey: { name: "username", allowNull: false },
+  as: "userAss",
+  onDelete: "cascade",
+  onUpdate: "cascade",
+});
+db.postReaction.belongsTo(db.post, {
+  foreignKey: { name: "post_id", allowNull: false },
+  as: "postAss",
+  onDelete: "cascade",
+  onUpdate: "cascade",
+});
+
+// Relate parent post with comment(child post)
+db.post.hasMany(db.post, {
+  foreignKey: { name: "parent_post_id", allowNull: true },
+  onDelete: "cascade",
+});
+
+// Relate userFollows with user
+db.userFollows.belongsTo(db.user, {
+  foreignKey: { name: "user_requester", allowNull: false },
+  as: "requester",
+});
+
+db.userFollows.belongsTo(db.user, {
+  foreignKey: { name: "user_recepient", allowNull: false },
+  as: "recepient",
+});
+
 // Include a sync option with seed data logic included.
 db.sync = async () => {
-  // Sync schema.
+  // // Sync schema.
   await db.sequelize.sync();
 
-  // Can sync with force if the schema has become out of date - note that syncing with force is a destructive operation.
+  //Can sync with force if the schema has become out of date - note that syncing with force is a destructive operation.
   // await db.sequelize.sync({ force: true });
 
   await seedData();
