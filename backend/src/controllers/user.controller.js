@@ -19,12 +19,14 @@ exports.one = async (req, res) => {
 exports.login = async (req, res) => {
   const user = await db.user.findByPk(req.query.username);
 
-  if(user === null || await argon2.verify(user.password_hash, req.query.password) === false)
+  if (
+    user === null ||
+    (await argon2.verify(user.password_hash, req.query.password)) === false
+  )
     // Login failed.
     res.json(null);
-  else
-    res.json(user);
-    //TODO track activity here ?
+  else res.json(user);
+  //TODO track activity here ?
 };
 
 // Create a user in the database.
@@ -35,8 +37,32 @@ exports.create = async (req, res) => {
     username: req.body.username,
     password_hash: hash,
     first_name: req.body.firstname,
-    last_name: req.body.lastname
+    last_name: req.body.lastname,
   });
 
   res.json(user);
+};
+
+// Update a user in the database.
+exports.update = async (req, res) => {
+  const user = await db.user.findByPk(req.query.username);
+
+  user.first_name = req.body.firstName;
+  user.last_name = req.body.lastName;
+  //TODO : change password, img
+  await user.save();
+
+  return res.json(user);
+};
+
+// Remove a user from the database.
+exports.remove = async (req, res) => {
+  const user = await db.user.findByPk(req.query.username);
+  let removed = false;
+  if (user !== null) {
+    await user.destroy();
+    removed = true;
+  }
+
+  return res.json(removed);
 };

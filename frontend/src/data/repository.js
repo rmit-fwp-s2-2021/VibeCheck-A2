@@ -30,6 +30,18 @@ async function createUser(user) {
   return response.data;
 }
 
+async function updateUser(username, user) {
+  const response = await axios.put(API_HOST + `/api/users${username}`, user);
+
+  return response.data;
+}
+
+async function deleteUser(username) {
+  const response = await axios.delete(API_HOST + `/api/users${username}`);
+
+  return response.data;
+}
+
 // --- Post ---------------------------------------------------------------------------------------
 async function getPosts() {
   const response = await axios.get(API_HOST + "/api/posts");
