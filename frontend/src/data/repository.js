@@ -33,13 +33,18 @@ async function createUser(user) {
 }
 
 async function updateUser(username, user) {
-  const response = await axios.put(API_HOST + `/api/users/${username}`, user);
+  let response = null;
+  try {
+    response = await axios.put(API_HOST + `/api/users/${username}`, user);
+  } catch (e) {
+    console.log(`Unable to update user ${username}. ${e}`);
+    return;
+  }
 
   return response.data;
 }
 
 async function deleteUser(username) {
-  console.log(username)
   let response = null;
   try {
     response = await axios.delete(API_HOST + `/api/users/${username}`);

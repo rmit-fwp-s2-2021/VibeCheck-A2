@@ -47,8 +47,8 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
   const user = await db.user.findByPk(req.params.username);
 
-  user.first_name = req.body.firstName;
-  user.last_name = req.body.lastName;
+  user.first_name = req.body.firstname;
+  user.last_name = req.body.lastname;
   //TODO : change password, img
   await user.save();
 

@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Footer from "./components/Footer";
 import { getUser, removeUser } from "./data/repository";
 import Register from "./pages/Register";
+import EditProfile from "./pages/EditPofile";
 
 
 function App() {
@@ -38,10 +39,13 @@ function App() {
                 <Register loginUser={loginUser} />
               </Route>
               <Route path="/profile">
-                <MyProfile user={user} />
+                <MyProfile user={user} logoutUser={logoutUser}/>
               </Route>
               <Route path="/forum">
                 <Forum user={user} />
+              </Route>
+              <Route path="/editProfile">
+                <EditProfile user={user} />
               </Route>
               <Route path="/">
                 <Home user={user} />

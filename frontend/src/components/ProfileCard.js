@@ -14,11 +14,15 @@ export default function ProfileCard(props) {
           {props.user.email} <br />
           Joining date : {props.user.created_at}
         </p>
-        <a href="#" className="btn btn-primary">
+        <a href="#" className="btn btn-primary" onClick={props.handleEdit}>
           Edit
         </a>
         <div>&nbsp;</div>
-        <a href="#" className="btn btn-danger" onClick={() => props.handleDelete(props.user.username)}>
+        <a
+          href="#"
+          className="btn btn-danger"
+          onClick={() => props.handleDelete(props.user.username)}
+        >
           Delete
         </a>
       </div>
