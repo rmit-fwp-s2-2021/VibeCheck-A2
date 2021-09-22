@@ -10,7 +10,7 @@ exports.all = async (req, res) => {
 
 // Select one user from the database.
 exports.one = async (req, res) => {
-  const user = await db.user.findByPk(req.params.id);
+  const user = await db.user.findByPk(req.params.username);
 
   res.json(user);
 };
@@ -45,7 +45,7 @@ exports.create = async (req, res) => {
 
 // Update a user in the database.
 exports.update = async (req, res) => {
-  const user = await db.user.findByPk(req.query.username);
+  const user = await db.user.findByPk(req.params.username);
 
   user.first_name = req.body.firstName;
   user.last_name = req.body.lastName;
@@ -57,7 +57,7 @@ exports.update = async (req, res) => {
 
 // Remove a user from the database.
 exports.remove = async (req, res) => {
-  const user = await db.user.findByPk(req.query.username);
+  const user = await db.user.findByPk(req.params.username);
   let removed = false;
   if (user !== null) {
     await user.destroy();

@@ -7,13 +7,15 @@ const API_HOST = "http://localhost:4000";
 const USER_KEY = "user";
 
 // --- User ---------------------------------------------------------------------------------------
+const USER_ROUTE = "/api/users/"
 async function verifyUser(username, password) {
-  const response = await axios.get(API_HOST + "/api/users/login", { params: { username, password } });
+  const response = await axios.get(API_HOST + "/api/users/login", {
+    params: { username, password },
+  });
   const user = response.data;
-  
+
   // NOTE: In this example the login is also persistent as it is stored in local storage.
-  if(user !== null)
-    setUser(user);
+  if (user !== null) setUser(user);
 
   return user;
 }
@@ -31,14 +33,22 @@ async function createUser(user) {
 }
 
 async function updateUser(username, user) {
-  const response = await axios.put(API_HOST + `/api/users${username}`, user);
+  const response = await axios.put(API_HOST + `/api/users/${username}`, user);
 
   return response.data;
 }
 
 async function deleteUser(username) {
-  const response = await axios.delete(API_HOST + `/api/users${username}`);
+  console.log(username)
+  let response = null;
+  try {
+    response = await axios.delete(API_HOST + `/api/users/${username}`);
+  } catch (e) {
+    console.log(`Unable to delete user ${username}. ${e}`);
+    return;
+  }
 
+  console.log(response)
   return response.data;
 }
 
@@ -69,7 +79,13 @@ function removeUser() {
 }
 
 export {
-  verifyUser, findUser, createUser,
-  getPosts, createPost,
-  getUser, removeUser
-}
+  verifyUser,
+  findUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  getPosts,
+  createPost,
+  getUser,
+  removeUser,
+};
