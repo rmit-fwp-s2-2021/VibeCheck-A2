@@ -49,7 +49,11 @@ exports.update = async (req, res) => {
 
   user.first_name = req.body.firstname;
   user.last_name = req.body.lastname;
-  //TODO : change password, img
+  if(req.body.password){
+    const hash = await argon2.hash(req.body.password, { type: argon2.argon2id });
+    user.password_hash = hash
+  }
+  //TODO : img
   await user.save();
 
   return res.json(user);
