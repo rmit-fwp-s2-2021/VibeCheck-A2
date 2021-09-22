@@ -1,4 +1,5 @@
 import React from "react";
+import { getHumanReadableDate } from "../Util";
 
 export default function ProfileCard(props) {
   return (
@@ -12,7 +13,7 @@ export default function ProfileCard(props) {
         <h5 className="card-title">{props.user.first_name}</h5>
         <p className="card-text">
           {props.user.email} <br />
-          Joining date : {props.user.created_at}
+          Joining date : {getHumanReadableDate(props.user.createdAt)}
         </p>
         <a href="#" className="btn btn-primary" onClick={props.handleEdit}>
           Edit

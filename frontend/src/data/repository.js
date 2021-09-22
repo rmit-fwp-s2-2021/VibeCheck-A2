@@ -7,7 +7,7 @@ const API_HOST = "http://localhost:4000";
 const USER_KEY = "user";
 
 // --- User ---------------------------------------------------------------------------------------
-const USER_ROUTE = "/api/users/"
+const USER_ROUTE = "/api/users/";
 async function verifyUser(username, password) {
   const response = await axios.get(API_HOST + "/api/users/login", {
     params: { username, password },
@@ -20,8 +20,14 @@ async function verifyUser(username, password) {
   return user;
 }
 
-async function findUser(id) {
-  const response = await axios.get(API_HOST + `/api/users/select/${id}`);
+async function findUser(username) {
+  let response = null;
+  try {
+    response = await axios.get(API_HOST + `/api/users/select/${username}`);
+  } catch (e) {
+    console.log(`Unable to find user ${username}. ${e}`);
+    return;
+  }
 
   return response.data;
 }
@@ -53,7 +59,7 @@ async function deleteUser(username) {
     return;
   }
 
-  console.log(response)
+  console.log(response);
   return response.data;
 }
 

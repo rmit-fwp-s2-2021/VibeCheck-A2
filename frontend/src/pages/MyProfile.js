@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProfileCard from "../components/ProfileCard";
-import { deleteUser } from "../data/repository";
+import { deleteUser, findUser } from "../data/repository";
 import { useHistory } from "react-router-dom";
 
 export default function MyProfile(props) {
   const history = useHistory();
+  const [user, setUser] = useState(props.user);
+
+  useEffect(() => {
+    getLoggedInUser();
+  }, []);
+
+  const getLoggedInUser = async () => {
+    const logged_in_user = await findUser(props.user.username)
+    setUser(logged_in_user)
+  }
 
   const handleDelete = async (username) => {
     if (!window.confirm(`Are you sure you want to delete User ${username} ?`)) {
@@ -25,13 +35,13 @@ export default function MyProfile(props) {
       <h1 className="display-4">My Profile</h1>
       <h4>
         <strong>
-          Hello {props.user.first_name} {props.user.last_name}!
+          Hello {user.first_name} {user.last_name}!
         </strong>
       </h4>
       <div className="row">
         <div className="col-md-6 sol-sm-12">
           <ProfileCard
-            user={props.user}
+            user={user}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
           />
