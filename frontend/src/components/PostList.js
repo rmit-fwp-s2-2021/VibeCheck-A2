@@ -16,13 +16,15 @@ export default function PostList(props) {
               >
                 Reply
               </a>
+              <div>&nbsp;</div>
 
               {x.username === props.user.username && (
                 <>
                   <a
                     href="#"
-                    className="btn btn-primary"
-                    onClick={props.handleEdit}
+                    className="btn btn-success"
+                    data-toggle="modal" data-target="#exampleModal"
+                    // onClick={props.handleEdit}
                   >
                     Edit
                   </a>

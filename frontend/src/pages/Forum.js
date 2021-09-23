@@ -1,5 +1,6 @@
 // Some code was referenced from Mathew Bolger's tutorials.
 import React, { useState, useEffect } from "react";
+import EditPostModal from "../components/EditPostModal";
 import PostList from "../components/PostList";
 import { getPosts, createPost, deletePost } from "../data/repository";
 
@@ -26,7 +27,7 @@ export default function Forum(props) {
 
     setPosts(currentPosts);
     setIsLoading(false);
-  }
+  };
   const handleInputChange = (event) => {
     setPost(event.target.value);
   };
@@ -54,6 +55,10 @@ export default function Forum(props) {
     setErrorMessage("");
   };
 
+  const handleEdit = async (post_id) => {
+    if (post_id) {
+    }
+  };
   const handleDelete = async (post_id) => {
     if (post_id) {
       if (
@@ -118,6 +123,7 @@ export default function Forum(props) {
           />
         )}
       </div>
+      <EditPostModal />
     </div>
   );
 }
