@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./src/database"); // by default will look for index.js
+const fileUpload = require('express-fileupload');
 
 // Database will be sync'ed in the background.
 db.sync();
@@ -12,6 +13,8 @@ app.use(express.json());
 
 // Add CORS suport.
 app.use(cors());
+
+app.use(fileUpload());
 
 app.get("/", (req, res) => {
     res.json({ message: "VibeCheck API says hello!" });

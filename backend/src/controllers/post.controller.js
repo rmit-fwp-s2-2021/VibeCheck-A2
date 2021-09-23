@@ -18,9 +18,18 @@ exports.one = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
+  const uploaded_file = req.files.post_img;
+  let file_name = '';
+  let upload_path = '';
+  if(uploaded_file){
+    file_name = req.files.post_img.name;
+    upload_path = process.cwd() + '/public/post/' + file_name;
+    uploaded_file.mv(upload_path);
+  }
   const post = await db.post.create({
     text: req.body.text,
     username: req.body.username,
+    img_url: uploaded_file ? upload_path : null
   });
 
   res.json(post);

@@ -47,7 +47,7 @@ export default function Forum(props) {
     form_data.set("username", props.user.username)
     form_data.set("text", trimmedPost);
     form_data.set("post_img", post_img);
-    //const newPost = { text: trimmedPost, username: props.user.username };
+    const newPost = { text: trimmedPost, username: props.user.username };
     await createPost(form_data);
 
     // Add post to locally stored posts.
