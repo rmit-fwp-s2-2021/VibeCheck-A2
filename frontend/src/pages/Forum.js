@@ -1,8 +1,8 @@
+// Some code was referenced from Mathew Bolger's tutorials.
 import React, { useState, useEffect } from "react";
+import PostList from "../components/PostList";
 import { getPosts, createPost } from "../data/repository";
 
-// NOTE: The posts are not persistent and will be lost when the component unmounts.
-// Could store the posts in localStorage, within the parent component, in a context, etc...
 export default function Forum(props) {
   const [post, setPost] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
@@ -79,12 +79,7 @@ export default function Forum(props) {
           posts.length === 0 ?
             <span className="text-muted">No posts have been submitted.</span>
             :
-            posts.map((x) =>
-              <div className="border my-3 p-3" style={{ whiteSpace: "pre-wrap" }}>
-                <h3 className="text-primary">{x.username}</h3>
-                {x.text}
-              </div>
-            )
+            <PostList posts={posts} />
         }
       </div>
     </div>

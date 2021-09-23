@@ -10,7 +10,7 @@ export default function ProfileCard(props) {
         alt="Card image cap"
       ></img>
       <div className="card-body">
-        <h5 className="card-title">{props.user.first_name}</h5>
+        <h5 className="card-title">{props.user.first_name} {props.user.last_name}</h5>
         <p className="card-text">
           {props.user.email} <br />
           Joining date : {getHumanReadableDate(props.user.createdAt)}

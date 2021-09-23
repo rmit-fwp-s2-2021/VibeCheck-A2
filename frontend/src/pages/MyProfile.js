@@ -35,7 +35,7 @@ export default function MyProfile(props) {
       <h1 className="display-4">My Profile</h1>
       <h4>
         <strong>
-          Hello {user.first_name} {user.last_name}!
+          Hello {props.user.username}!
         </strong>
       </h4>
       <div className="row">
