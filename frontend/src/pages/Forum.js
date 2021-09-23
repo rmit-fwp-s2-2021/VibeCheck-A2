@@ -1,7 +1,7 @@
 // Some code was referenced from Mathew Bolger's tutorials.
 import React, { useState, useEffect } from "react";
 import PostList from "../components/PostList";
-import { getPosts, createPost } from "../data/repository";
+import { getPosts, createPost, deletePost } from "../data/repository";
 
 export default function Forum(props) {
   const [post, setPost] = useState("");
@@ -21,6 +21,12 @@ export default function Forum(props) {
     loadPosts();
   }, []);
 
+  const loadPosts = async () => {
+    const currentPosts = await getPosts();
+
+    setPosts(currentPosts);
+    setIsLoading(false);
+  }
   const handleInputChange = (event) => {
     setPost(event.target.value);
   };
@@ -31,7 +37,7 @@ export default function Forum(props) {
     // Trim the post text.
     const trimmedPost = post.trim();
 
-    if(trimmedPost === "") {
+    if (trimmedPost === "") {
       setErrorMessage("A post cannot be empty.");
       return;
     }
@@ -48,23 +54,50 @@ export default function Forum(props) {
     setErrorMessage("");
   };
 
+  const handleDelete = async (post_id) => {
+    if (post_id) {
+      if (
+        !window.confirm(`Are you sure you want to delete post ${post_id} ?`)
+      ) {
+        return;
+      }
+      await deletePost(post_id);
+      loadPosts();
+    } else {
+      console.log("Post id cannot be null");
+    }
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <fieldset>
           <legend>New Post</legend>
           <div className="form-group">
-            <textarea name="post" id="post" className="form-control" rows="3"
-              value={post} onChange={handleInputChange} />
+            <textarea
+              name="post"
+              id="post"
+              className="form-control"
+              rows="3"
+              value={post}
+              onChange={handleInputChange}
+            />
           </div>
-          {errorMessage !== null &&
+          {errorMessage !== null && (
             <div className="form-group">
               <span className="text-danger">{errorMessage}</span>
             </div>
-          }
+          )}
           <div className="form-group">
-            <input type="button" className="btn btn-danger mr-5" value="Cancel"
-              onClick={() => { setPost(""); setErrorMessage(null); }} />
+            <input
+              type="button"
+              className="btn btn-danger mr-5"
+              value="Cancel"
+              onClick={() => {
+                setPost("");
+                setErrorMessage(null);
+              }}
+            />
             <input type="submit" className="btn btn-primary" value="Post" />
           </div>
         </fieldset>
@@ -73,14 +106,17 @@ export default function Forum(props) {
       <hr />
       <h1>Forum</h1>
       <div>
-        {isLoading ?
+        {isLoading ? (
           <div>Loading posts...</div>
-          :
-          posts.length === 0 ?
-            <span className="text-muted">No posts have been submitted.</span>
-            :
-            <PostList posts={posts} />
-        }
+        ) : posts.length === 0 ? (
+          <span className="text-muted">No posts have been submitted.</span>
+        ) : (
+          <PostList
+            posts={posts}
+            user={props.user}
+            handleDelete={handleDelete}
+          />
+        )}
       </div>
     </div>
   );

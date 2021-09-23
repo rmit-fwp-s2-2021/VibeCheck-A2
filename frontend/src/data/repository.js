@@ -59,11 +59,11 @@ async function deleteUser(username) {
     return;
   }
 
-  console.log(response);
   return response.data;
 }
 
 // --- Post ---------------------------------------------------------------------------------------
+const POST_ROUTE = "/api/posts/";
 async function getPosts() {
   const response = await axios.get(API_HOST + "/api/posts");
 
@@ -72,6 +72,41 @@ async function getPosts() {
 
 async function createPost(post) {
   const response = await axios.post(API_HOST + "/api/posts", post);
+
+  return response.data;
+}
+
+/**
+ * Sends http PUT request to api to update a post.
+ * @param {int} post_id id of post to update.
+ * @param {Post} post new post fields.
+ * @returns {object} Data object from response
+ */
+async function updatePost(post_id, post) {
+  let response = null;
+  try {
+    response = await axios.put(API_HOST + POST_ROUTE + post_id, post);
+  } catch (e) {
+    console.log(`Unable to update post ${post_id}. ${e}`);
+    return;
+  }
+
+  return response.data;
+}
+
+/**
+ * Sends http delete request to api to delete a post.
+ * @param {int} post_id id of post to delete
+ * @returns {object} Data object from response.
+ */
+async function deletePost(post_id) {
+  let response = null;
+  try {
+    response = await axios.delete(API_HOST + POST_ROUTE + post_id);
+  } catch (e) {
+    console.log(`Unable to delete post ${post_id}. ${e}`);
+    return;
+  }
 
   return response.data;
 }
@@ -97,6 +132,8 @@ export {
   deleteUser,
   getPosts,
   createPost,
+  updatePost,
+  deletePost,
   getUser,
   removeUser,
 };

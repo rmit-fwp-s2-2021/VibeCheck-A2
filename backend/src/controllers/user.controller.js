@@ -1,3 +1,5 @@
+// Some code was referenced from Week08 tutorial.
+
 const db = require("../database");
 const argon2 = require("argon2");
 
