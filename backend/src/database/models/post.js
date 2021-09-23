@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) =>
       },
     },
     {
-      // Add the timestamp attributes (updatedAt, createdAt).
+      // Add the timestamp attributes (updated_at, created_at).
       timestamps: true,
       underscored: true,
     }

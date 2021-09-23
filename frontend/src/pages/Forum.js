@@ -6,11 +6,12 @@ import { getPosts, createPost, deletePost } from "../data/repository";
 
 export default function Forum(props) {
   const [post, setPost] = useState("");
+  const [post_img, setPostImg] = useState(null);
+  const [post_img_preview, setPostImgPreview] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
 
-  // Load posts.
   useEffect(() => {
     async function loadPosts() {
       const currentPosts = await getPosts();
@@ -35,7 +36,6 @@ export default function Forum(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Trim the post text.
     const trimmedPost = post.trim();
 
     if (trimmedPost === "") {
@@ -43,16 +43,25 @@ export default function Forum(props) {
       return;
     }
 
-    // Create post.
-    const newPost = { text: trimmedPost, username: props.user.username };
-    await createPost(newPost);
+    const form_data = new FormData();
+    form_data.set("username", props.user.username)
+    form_data.set("text", trimmedPost);
+    form_data.set("post_img", post_img);
+    //const newPost = { text: trimmedPost, username: props.user.username };
+    await createPost(form_data);
 
     // Add post to locally stored posts.
     setPosts([...posts, newPost]);
 
-    // Reset post content.
     setPost("");
     setErrorMessage("");
+  };
+
+  const handleFileChange = (event) => {
+    event.preventDefault();
+    const file = event.target.files[0];
+    setPostImg(file);
+    setPostImgPreview(URL.createObjectURL(file));
   };
 
   const handleEdit = async (post_id) => {
@@ -74,7 +83,7 @@ export default function Forum(props) {
   };
 
   return (
-    <div>
+    <div className="forum">
       <form onSubmit={handleSubmit}>
         <fieldset>
           <legend>New Post</legend>
@@ -87,6 +96,9 @@ export default function Forum(props) {
               value={post}
               onChange={handleInputChange}
             />
+          </div>
+          <div className="form-group">
+            <input type="file" id="post_img" onChange={handleFileChange} />
           </div>
           {errorMessage !== null && (
             <div className="form-group">
@@ -107,6 +119,8 @@ export default function Forum(props) {
           </div>
         </fieldset>
       </form>
+
+      {post_img_preview && <img src={post_img_preview} />}
 
       <hr />
       <h1>Forum</h1>
