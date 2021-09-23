@@ -1,13 +1,27 @@
 import React, { useState, useEffect } from "react";
 
 export default function PostList(props) {
+
+  const getNameFromUrl = (str) => {
+    const pieces = str.split("\\");
+    const last = pieces[pieces.length - 1];
+    return last;
+  };
+  
   return (
     <>
       {props.posts.map((x) => (
         <div key={x.post_id}>
           <div className="border my-3 p-3" style={{ whiteSpace: "pre-wrap" }}>
             <h3 className="text-primary">{x.username}</h3>
-            {x.text}
+            <div className="row">
+              {x.img_url != null && (
+                <div className="col-sm-6">
+                  <img src={"http://127.0.0.1:8887/" + getNameFromUrl(x.img_url)} />
+                </div>
+              )}
+              <div className="col-sm-6">{x.text}</div>
+            </div>
             <div className="row">
               <a
                 href="#"
@@ -23,7 +37,8 @@ export default function PostList(props) {
                   <a
                     href="#"
                     className="btn btn-success"
-                    data-toggle="modal" data-target="#exampleModal"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
                     // onClick={props.handleEdit}
                   >
                     Edit

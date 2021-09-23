@@ -18,12 +18,12 @@ exports.one = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  const uploaded_file = req.files.post_img;
+  const uploaded_file = req.files ? req.files.post_img : null;
   let file_name = '';
   let upload_path = '';
   if(uploaded_file){
     file_name = req.files.post_img.name;
-    upload_path = process.cwd() + '/public/post/' + file_name;
+    upload_path = process.cwd() + '\\public\\post\\' + file_name;
     uploaded_file.mv(upload_path);
   }
   const post = await db.post.create({
@@ -39,7 +39,9 @@ exports.update = async (req, res) => {
   const post = await db.post.findByPk(req.params.post_id);
 
   post.text = req.body.text;
-  post.img_url = req.body.img_url;
+  if(post.img_url){
+    post.img_url = req.body.img_url;
+  }
 
   await post.save();
 

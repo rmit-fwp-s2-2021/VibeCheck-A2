@@ -52,7 +52,7 @@ export default function Forum(props) {
 
     // Add post to locally stored posts.
     setPosts([...posts, newPost]);
-
+    loadPosts();
     setPost("");
     setErrorMessage("");
   };
@@ -113,6 +113,7 @@ export default function Forum(props) {
               onClick={() => {
                 setPost("");
                 setErrorMessage(null);
+                setPostImgPreview(null);
               }}
             />
             <input type="submit" className="btn btn-primary" value="Post" />
