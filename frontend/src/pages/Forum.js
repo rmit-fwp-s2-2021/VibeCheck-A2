@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import EditPostModal from "../components/EditPostModal";
 import PostList from "../components/PostList";
-import { getPosts, createPost, deletePost } from "../data/repository";
+import { getPosts, createPost, deletePost, updatePost } from "../data/repository";
 
 export default function Forum(props) {
   const [post, setPost] = useState("");
@@ -11,14 +11,16 @@ export default function Forum(props) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+  const [post_id_edit, setPostEditId] = useState('');
+
 
   useEffect(() => {
-    async function loadPosts() {
-      const currentPosts = await getPosts();
+    // async function loadPosts() {
+    //   const currentPosts = await getPosts();
 
-      setPosts(currentPosts);
-      setIsLoading(false);
-    }
+    //   setPosts(currentPosts);
+    //   setIsLoading(false);
+    // }
 
     loadPosts();
   }, []);
@@ -29,6 +31,7 @@ export default function Forum(props) {
     setPosts(currentPosts);
     setIsLoading(false);
   };
+
   const handleInputChange = (event) => {
     setPost(event.target.value);
   };
@@ -64,8 +67,12 @@ export default function Forum(props) {
     setPostImgPreview(URL.createObjectURL(file));
   };
 
-  const handleEdit = async (post_id) => {
-    if (post_id) {
+  const handleEdit = async (post_id, form_data = undefined) => {
+    if (form_data === undefined) {
+      setPostEditId(post_id) // flag post for editting by modal.
+    }else {
+      await updatePost(post_id_edit, form_data);
+      loadPosts();
     }
   };
   const handleDelete = async (post_id) => {
@@ -134,11 +141,12 @@ export default function Forum(props) {
           <PostList
             posts={posts}
             user={props.user}
+            handleEdit={handleEdit}
             handleDelete={handleDelete}
           />
         )}
       </div>
-      <EditPostModal />
+      <EditPostModal handleEdit={handleEdit}/>
     </div>
   );
 }

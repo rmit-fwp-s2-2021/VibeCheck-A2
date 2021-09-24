@@ -2,27 +2,41 @@ import React, { useState, useEffect } from "react";
 
 export default function EditPostModal(props) {
   const [post, setPost] = useState("");
+  const [post_img, setPostImg] = useState(null);
+  const [post_img_preview, setPostImgPreview] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-
+  
   const handleInputChange = (event) => {
     setPost(event.target.value);
   };
 
-  const getInitialFormData = () =>{
+  const handleFileChange = (event) => {
+    event.preventDefault();
+    const file = event.target.files[0];
+    setPostImg(file);
+    setPostImgPreview(URL.createObjectURL(file));
+  };
+
+  const getInitialFormData = () => {
     const form_data = new FormData();
-    form_data.set("")
-  }
+    form_data.set("");
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const trimmedPost = post.trim();
 
-    if (trimmedPost === "") {
-      setErrorMessage("A post cannot be empty.");
+    const form_data = new FormData()
+    if (trimmedPost === "" && post_img === null) {
+      setErrorMessage("Close modal if you do not want to update fields.");
       return;
     }
-  };
+    form_data.set("text", trimmedPost);
+    form_data.set("post_img", post_img);
+    props.handleEdit(null, form_data)
 
+  };
 
   return (
     <div
@@ -67,8 +81,14 @@ export default function EditPostModal(props) {
                   </div>
                 )}
                 <div className="form-group">
-                  <input type="file" />
+                  <input
+                    type="file"
+                    id="post_img"
+                    onChange={handleFileChange}
+                  />
                 </div>
+                {post_img_preview && <img src={post_img_preview} />}
+
                 <div className="form-group">
                   <input
                     type="button"
@@ -89,9 +109,7 @@ export default function EditPostModal(props) {
               </fieldset>
             </form>
           </div>
-          <div className="modal-footer">
-            Update text or image
-          </div>
+          <div className="modal-footer">Update text or image</div>
         </div>
       </div>
     </div>
