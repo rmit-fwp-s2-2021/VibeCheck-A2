@@ -31,6 +31,7 @@ exports.create = async (req, res) => {
     text: req.body.text,
     username: req.body.username,
     img_url: uploaded_file ? upload_path : null,
+    parent_post_id: req.body.parent_post_id ? parseInt(req.body.parent_post_id) : null,
   });
 
   res.json(post);

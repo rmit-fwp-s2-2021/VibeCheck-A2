@@ -22,7 +22,10 @@ code {
   height: 300px;
   width: 300px;
 }
-
+.reply img {
+  height: 300px;
+  width: 300px;
+}
 .modal-footer {
   justify-content: flex-start;
 }

@@ -9,7 +9,7 @@ export default function Reply(props) {
   const [post, setPost] = useState("");
   const [post_img, setPostImg] = useState(null);
   const [post_img_preview, setPostImgPreview] = useState(null);
-  const [parent_post_obj, setParentPostObj] = useState('');
+  const [parent_post_obj, setParentPostObj] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function Reply(props) {
     form_data.set("username", props.user.username);
     form_data.set("text", trimmedPost);
     form_data.set("post_img", post_img);
-    form_data.set("parent_post_id", props.parent_post_id);
+    form_data.set("parent_post_id", post_id);
 
     await createPost(form_data);
     history.push("/forum");
@@ -58,27 +58,25 @@ export default function Reply(props) {
 
   return (
     <div className="reply">
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="border my-3 p-3" style={{ whiteSpace: "pre-wrap" }}>
-            <h3 className="text-primary">{parent_post_obj.username}</h3>
-            <div className="row">
-              {parent_post_obj.img_url != null && (
-                <div className="col-sm-6">
-                  <img
-                    src={
-                      "http://127.0.0.1:8887/" +
-                      getNameFromUrl(parent_post_obj.img_url)
-                    }
-                  />
-                </div>
-              )}
-              <div className="col-sm-6">{parent_post_obj.text}</div>
+      <div className="border my-3 p-3" style={{ whiteSpace: "pre-wrap" }}>
+        <h3 className="text-primary">{parent_post_obj.username}</h3>
+        <div className="row">
+          {parent_post_obj.img_url != null && (
+            <div className="col-sm-6">
+              <img
+                src={
+                  "http://127.0.0.1:8887/" +
+                  getNameFromUrl(parent_post_obj.img_url)
+                }
+              />
             </div>
-          </div>
+          )}
+          <div className="col-sm-6">{parent_post_obj.text}</div>
         </div>
       </div>
+
       <hr />
+
       <form onSubmit={handleSubmit}>
         <fieldset>
           <legend>New Reply</legend>
@@ -111,7 +109,7 @@ export default function Reply(props) {
                 setPostImgPreview(null);
               }}
             />
-            <input type="submit" className="btn btn-primary" value="Post" />
+            <input type="submit" className="btn btn-primary" value="Reply" />
           </div>
         </fieldset>
       </form>

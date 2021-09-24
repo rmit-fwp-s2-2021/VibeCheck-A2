@@ -47,7 +47,7 @@ function App() {
                 <EditProfile user={user} />
               </Route>
               <Route path="/reply/:post_id">
-                <Reply />
+                <Reply user={user} />
               </Route>
               <Route path="/">
                 <Home user={user} />
