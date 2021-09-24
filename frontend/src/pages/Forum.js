@@ -77,7 +77,6 @@ export default function Forum(props) {
   };
 
   const handleReply = async (parent_post_id) => {
-    //event.preventDefault();
     history.push(`/reply/${parent_post_id}`);
   };
 
