@@ -5,7 +5,7 @@ export default function EditPostModal(props) {
   const [post_img, setPostImg] = useState(null);
   const [post_img_preview, setPostImgPreview] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  
+
   const handleInputChange = (event) => {
     setPost(event.target.value);
   };
@@ -17,25 +17,19 @@ export default function EditPostModal(props) {
     setPostImgPreview(URL.createObjectURL(file));
   };
 
-  const getInitialFormData = () => {
-    const form_data = new FormData();
-    form_data.set("");
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const trimmedPost = post.trim();
 
-    const form_data = new FormData()
+    const form_data = new FormData();
     if (trimmedPost === "" && post_img === null) {
       setErrorMessage("Close modal if you do not want to update fields.");
       return;
     }
     form_data.set("text", trimmedPost);
     form_data.set("post_img", post_img);
-    props.handleEdit(null, form_data)
-
+    props.handleEdit(null, form_data);
   };
 
   return (
@@ -103,13 +97,13 @@ export default function EditPostModal(props) {
                   <input
                     type="submit"
                     className="btn btn-primary"
-                    value="Post"
+                    value="Update Post"
                   />
                 </div>
               </fieldset>
             </form>
           </div>
-          <div className="modal-footer">Update text or image</div>
+          <div className="modal-footer">Update text, image or both!</div>
         </div>
       </div>
     </div>

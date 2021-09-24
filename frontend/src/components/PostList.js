@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import EditPostModal from "./EditPostModal";
 
 export default function PostList(props) {
 
@@ -27,7 +26,7 @@ export default function PostList(props) {
               <a
                 href="#"
                 className="btn btn-primary"
-                onClick={props.handleReply}
+                onClick={() => props.handleReply(x.post_id)}
               >
                 Reply
               </a>
@@ -40,7 +39,7 @@ export default function PostList(props) {
                     className="btn btn-success"
                     data-toggle="modal"
                     data-target="#exampleModal"
-                    onClick={() => props.handleEdit(x.post_id)}
+                    onClick={event => props.handleEdit(event, x.post_id)}
                   >
                     Edit
                   </a>
@@ -48,7 +47,7 @@ export default function PostList(props) {
                   <a
                     href="#"
                     className="btn btn-danger"
-                    onClick={() => props.handleDelete(x.post_id)}
+                    onClick={event => props.handleDelete(event, x.post_id)}
                   >
                     Delete
                   </a>

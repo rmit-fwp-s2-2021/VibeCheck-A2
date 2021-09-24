@@ -64,6 +64,24 @@ async function deleteUser(username) {
 
 // --- Post ---------------------------------------------------------------------------------------
 const POST_ROUTE = "/api/posts/";
+
+/**
+ * Sends HTTP GET request to api.
+ * @param {int} post_id id of post to get.
+ * @returns response data from api
+ */
+async function getPost(post_id) {
+  let response = null;
+  try {
+    response = await axios.get(`${API_HOST}${POST_ROUTE}select/${post_id}`);
+  } catch (e) {
+    console.log(`Unable to get post ${post_id}. ${e}`);
+    return;
+  }
+
+  return response.data;
+}
+
 async function getPosts() {
   const response = await axios.get(API_HOST + "/api/posts");
 
@@ -130,6 +148,7 @@ export {
   createUser,
   updateUser,
   deleteUser,
+  getPost,
   getPosts,
   createPost,
   updatePost,

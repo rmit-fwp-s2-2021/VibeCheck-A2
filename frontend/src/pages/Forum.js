@@ -1,27 +1,27 @@
 // Some code was referenced from Mathew Bolger's tutorials.
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import EditPostModal from "../components/EditPostModal";
 import PostList from "../components/PostList";
-import { getPosts, createPost, deletePost, updatePost } from "../data/repository";
+import {
+  getPosts,
+  createPost,
+  deletePost,
+  updatePost,
+} from "../data/repository";
 
 export default function Forum(props) {
+  const history = useHistory();
+
   const [post, setPost] = useState("");
   const [post_img, setPostImg] = useState(null);
   const [post_img_preview, setPostImgPreview] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
-  const [post_id_edit, setPostEditId] = useState('');
-
+  const [post_id_edit, setPostEditId] = useState("");
 
   useEffect(() => {
-    // async function loadPosts() {
-    //   const currentPosts = await getPosts();
-
-    //   setPosts(currentPosts);
-    //   setIsLoading(false);
-    // }
-
     loadPosts();
   }, []);
 
@@ -47,7 +47,7 @@ export default function Forum(props) {
     }
 
     const form_data = new FormData();
-    form_data.set("username", props.user.username)
+    form_data.set("username", props.user.username);
     form_data.set("text", trimmedPost);
     form_data.set("post_img", post_img);
     const newPost = { text: trimmedPost, username: props.user.username };
@@ -69,13 +69,20 @@ export default function Forum(props) {
 
   const handleEdit = async (post_id, form_data = undefined) => {
     if (form_data === undefined) {
-      setPostEditId(post_id) // flag post for editting by modal.
-    }else {
+      setPostEditId(post_id); // flag post for editting by modal.
+    } else {
       await updatePost(post_id_edit, form_data);
       loadPosts();
     }
   };
-  const handleDelete = async (post_id) => {
+
+  const handleReply = async (parent_post_id) => {
+    //event.preventDefault();
+    history.push(`/reply/${parent_post_id}`);
+  };
+
+  const handleDelete = async (event, post_id) => {
+    event.preventDefault();
     if (post_id) {
       if (
         !window.confirm(`Are you sure you want to delete post ${post_id} ?`)
@@ -143,10 +150,11 @@ export default function Forum(props) {
             user={props.user}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
+            handleReply={handleReply}
           />
         )}
       </div>
-      <EditPostModal handleEdit={handleEdit}/>
+      <EditPostModal handleEdit={handleEdit} />
     </div>
   );
 }
