@@ -29,14 +29,28 @@ export default function PostList(props) {
     <>
       {props.posts.map((x) => (
         <div key={x.post_id}>
-          <PostContainer user={props.user} post={x} />
+          {x.parent_post_id === null && (
+            <PostContainer
+              key={x.post_id}
+              user={props.user}
+              post={x}
+              handleEdit={props.handleEdit}
+              handleDelete={props.handleDelete}
+              handleReply={props.handleReply}
+            />
+          )}
 
-          <div className="col-md-8 offset-md-4">
-          {getReplies(x.post_id).map((reply) => (
-            <PostContainer user={props.user} post={reply} />
-          ))}
+          <div className="col-md-10 offset-md-2">
+            {getReplies(x.post_id).map((reply) => (
+              <PostContainer
+                user={props.user}
+                post={reply}
+                handleEdit={props.handleEdit}
+                handleDelete={props.handleDelete}
+                handleReply={props.handleReply}
+              />
+            ))}
           </div>
-
         </div>
       ))}
     </>

@@ -39,7 +39,7 @@ export default function PostContainer(props) {
               className="btn btn-success"
               data-toggle="modal"
               data-target="#exampleModal"
-              onClick={(event) => props.handleEdit(event, props.post.post_id)}
+              onClick={() => props.handleEdit(props.post.post_id)}
             >
               Edit
             </a>

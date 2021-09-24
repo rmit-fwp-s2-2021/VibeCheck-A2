@@ -19,7 +19,7 @@ export default function Forum(props) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
-  const [post_id_edit, setPostEditId] = useState("");
+  const [post_id_edit, setPostEditId] = useState(0);
 
   useEffect(() => {
     loadPosts();
