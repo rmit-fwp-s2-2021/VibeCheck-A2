@@ -23,6 +23,10 @@ export default function PostContainer(props) {
         <div className="col-sm-6">{props.post.text}</div>
       </div>
       <div className="row">
+      <i class="far fa-thumbs-up"></i>
+      <i class="far fa-thumbs-down"></i>
+      </div>
+      <div className="row">
         <a
           href="#"
           className="btn btn-primary"
