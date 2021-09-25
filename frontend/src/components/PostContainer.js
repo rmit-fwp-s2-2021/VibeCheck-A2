@@ -6,7 +6,7 @@ export default function PostContainer(props) {
     const last = pieces[pieces.length - 1];
     return last;
   };
-  
+
   return (
     <div className="border my-3 p-3" style={{ whiteSpace: "pre-wrap" }}>
       <h3 className="text-primary">{props.post.username}</h3>
@@ -23,8 +23,23 @@ export default function PostContainer(props) {
         <div className="col-sm-6">{props.post.text}</div>
       </div>
       <div className="row">
-      <i class="far fa-thumbs-up"></i>
-      <i class="far fa-thumbs-down"></i>
+      <a
+          href=""
+          className="btn like-btn reaction-btn"
+          onClick={(event) => props.handleReaction(event, props.post.post_id)}
+          name="like"
+        >
+          <span><i className="fas fa-thumbs-up"></i>{" " + 0}</span>
+        </a>
+        <div>&nbsp;</div>
+        <a
+          href=""
+          className="btn dislike-btn reaction-btn"
+          onClick={(event) => props.handleReaction(event, props.post.post_id)}
+          name="dislike"
+        >
+          <span><i className="fas fa-thumbs-down"></i>{" " + 0}</span>
+        </a>
       </div>
       <div className="row">
         <a

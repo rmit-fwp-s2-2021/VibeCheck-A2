@@ -16,53 +16,41 @@ export default function PostList(props) {
     return replies;
   };
 
-  const renderReplies = (post_id) => {
-    const replies = getReplies(post_id);
-    let reply_divs = [];
-    for (const reply of replies) {
-      reply_divs.push(<h2>{reply.text}</h2>);
-    }
-    return reply_divs;
-  };
-
   return (
     <>
-      {props.posts.map((x) => (
-        <div key={x.post_id}>
-          {x.parent_post_id === null && (
-            <PostContainer
-              key={x.post_id}
-              user={props.user}
-              post={x}
-              handleEdit={props.handleEdit}
-              handleDelete={props.handleDelete}
-              handleReply={props.handleReply}
-            />
-          )}
-
-          <div className="col-md-10 offset-md-2">
-            {getReplies(x.post_id).map((reply) => (
+      {
+        // Render all posts and not replies to post.
+        props.posts.map((x) => (
+          <div key={x.post_id}>
+            {x.parent_post_id === null && (
               <PostContainer
+                key={"post-" + x.post_id}
                 user={props.user}
-                post={reply}
+                post={x}
                 handleEdit={props.handleEdit}
                 handleDelete={props.handleDelete}
                 handleReply={props.handleReply}
+                handleReaction={props.handleReaction}
               />
-            ))}
+            )}
+
+            <div className="col-md-10 offset-md-2">
+              {getReplies(x.post_id).map((reply, i) => (
+                <PostContainer
+                  key={"reply-" + x.post_id + i}
+                  user={props.user}
+                  post={reply}
+                  handleEdit={props.handleEdit}
+                  handleDelete={props.handleDelete}
+                  handleReply={props.handleReply}
+                  handleReaction={props.handleReaction}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </>
   );
 }
 
-// function ReplyList(props) {
-//   return(
-//     <>
-//     {props.replies.map((x) => {
-
-//     })}
-//     </>
-//   )
-// }

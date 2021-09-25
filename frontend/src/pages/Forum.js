@@ -76,6 +76,21 @@ export default function Forum(props) {
     }
   };
 
+  const handleReaction = async (event, post_id) => {
+    console.log("TRIGGER");
+    event.preventDefault();
+    // toggle btn
+    // send req
+    const name = event.currentTarget.name;
+    if(name === "like"){
+      console.log("Like rq" + post_id)
+    }else if(name === "dislike"){
+      console.log("DisLike rq" + post_id)
+    }else {
+      console.log("Name err!" + event.target.name)
+    }
+  }
+
   const handleReply = async (parent_post_id) => {
     history.push(`/reply/${parent_post_id}`);
   };
@@ -150,6 +165,7 @@ export default function Forum(props) {
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             handleReply={handleReply}
+            handleReaction={handleReaction}
           />
         )}
       </div>
