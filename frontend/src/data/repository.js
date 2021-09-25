@@ -141,10 +141,12 @@ async function getPostReaction(username, post_id) {
   let response = null;
   try {
     response = await axios.get(
-      `${API_HOST}${POST_REACTION_ROUTE}/select/${post_id}/${username}`
+      `${API_HOST}${POST_REACTION_ROUTE}select/${post_id}/${username}`
     );
+      
+      console.log(`${API_HOST}${POST_REACTION_ROUTE}select/${post_id}/${username}`);
   } catch (e) {
-    console.log(`Unable to get reaction for post ${post_id}. {e}`);
+    console.log(`Unable to get reaction for post ${post_id}. ${e}`);
     return;
   }
 
@@ -195,6 +197,26 @@ async function updatePostReaction(username, post_id, postReaction) {
   return response.data;
 }
 
+/**
+ * Sends HTTP GET request to get post reactions with count.
+ * @param {Number} post_id 
+ * @param {boolean} is_liked
+ * @returns {object} response data from api.
+ */
+async function getPostReactionCount(post_id, is_liked) {
+  let response = null;
+  try {
+    response = await axios.get(
+      `${API_HOST}${POST_REACTION_ROUTE}${post_id}/${is_liked}`
+    );
+  } catch (e) {
+    console.log(`Unable to get reaction for post ${post_id}. ${e}`);
+    return;
+  }
+
+  return response.data;
+}
+
 async function deletePostReaction(username, post_id) {
   let response = null;
   try {
@@ -236,6 +258,7 @@ export {
   getPostReaction,
   createPostReaction,
   updatePostReaction,
+  getPostReactionCount,
   deletePostReaction,
   getUser,
   removeUser,

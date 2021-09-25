@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) =>
       },
       is_liked: {
         type: DataTypes.BOOLEAN(),
-        allowNull: true,
+        allowNull: false,
       },
     },
     {

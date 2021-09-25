@@ -9,6 +9,19 @@ exports.all = async (req, res) => {
   res.json(post_reactions);
 };
 
+exports.count = async (req, res) => {
+  if (req.params.is_liked != "true"  && req.params.is_liked != "false") {
+    return null;
+  }
+  const reaction_count = await db.postReaction.findAndCountAll({
+    where: {
+      post_id: req.params.post_id,
+      is_liked: JSON.parse(req.params.is_liked),
+    },
+  });
+  res.json(reaction_count);
+};
+
 exports.one = async (req, res) => {
   const post_reaction = await db.postReaction.findOne({
     where: {
@@ -24,7 +37,7 @@ exports.create = async (req, res) => {
   const post_reaction = await db.postReaction.create({
     post_id: parseInt(req.body.post_id),
     username: req.body.username,
-    is_liked: Boolean(Number(req.body.is_liked)),
+    is_liked: req.body.is_liked,
   });
 
   res.json(post_reaction);

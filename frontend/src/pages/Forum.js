@@ -89,13 +89,13 @@ export default function Forum(props) {
 
     return postReaction;
   };
+
   const handleReaction = async (event, post_id) => {
     event.preventDefault();
-    // toggle btn
-    // send req
+    
     const name = event.currentTarget.name;
     const reaction = await getPostReaction(props.user.username, post_id);
-    console.log(reaction);
+
     if (name === "like") {
       // Check if post has reactions
       if (reaction && reaction.is_liked != null) {
@@ -103,7 +103,7 @@ export default function Forum(props) {
         if (reaction.is_liked === true) {
         // If like reaction exists, user wants to remove reaction.
           await deletePostReaction(props.user.username, post_id);
-          return;
+          //return;
         } else if (reaction.is_liked === false) {
           // If dislike reaction exists, user wants to update with like.
           const postReactionObj = createReactionObj(post_id, true);
@@ -123,7 +123,7 @@ export default function Forum(props) {
       if (reaction && reaction.is_liked != null) {
         if (reaction.is_liked === false) {
           await deletePostReaction(props.user.username, post_id);
-          return;
+         // return;
         } else if (reaction.is_liked === true) {
           const postReactionObj = createReactionObj(post_id, false);
           await updatePostReaction(
@@ -137,7 +137,7 @@ export default function Forum(props) {
         await createPostReaction(postReactionObj);
       }
     } else {
-      console.log("Name err!" + event.target.name);
+      console.log("Name err! " + name);
     }
   };
 
