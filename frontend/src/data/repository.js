@@ -128,6 +128,62 @@ async function deletePost(post_id) {
 
   return response.data;
 }
+// --- PostReaction ---------------------------------------------------------------------------------------
+const POST_REACTION_ROUTE = "/api/postReactions/";
+
+/**
+ * Send HTTP GET request to get a post reaction.
+ * @param {string} username Username of use who reacted on the post.
+ * @param {int} post_id Id of post to get reactions for.
+ * @returns {object} response data object from api.
+ */
+async function getPostReaction(username, post_id) {
+  let response = null;
+  try {
+    response = await axios.get(
+      `${API_HOST}${POST_REACTION_ROUTE}/select/${post_id}/${username}`
+    );
+  } catch (e) {
+    console.log(`Unable to get reaction for post ${post_id}. {e}`);
+    return;
+  }
+
+  return response.data;
+}
+
+/**
+ * Sends HTTP POST request to create a post reaction.
+ * @param {Object} postReaction fields of the reaction.
+ * @returns {Object} response data object from api.
+ */
+async function createPostReaction(postReaction) {
+  let response = null;
+  try {
+    response = await axios.post(
+      `${API_HOST}${POST_REACTION_ROUTE}`,
+      postReaction
+    );
+  } catch (e) {
+    console.log(`Unable to create post reaction ${postReaction}. ${e}`);
+    return;
+  }
+
+  return response.data;
+}
+
+async function deletePostReaction(username, post_id) {
+  let response = null;
+  try {
+    response = await axios.delete(
+      `${API_HOST}${POST_REACTION_ROUTE}/select/${post_id}/${username}`
+    );
+  } catch (e) {
+    console.log(
+      `Unable to delete post reaction for post ${post_id} and user ${username}. ${e}`
+    );
+    return;
+  }
+}
 
 // --- Helper functions to interact with local storage --------------------------------------------
 function setUser(user) {
@@ -153,6 +209,9 @@ export {
   createPost,
   updatePost,
   deletePost,
+  getPostReaction,
+  createPostReaction,
+  deletePostReaction,
   getUser,
   removeUser,
 };

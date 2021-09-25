@@ -8,6 +8,7 @@ import {
   createPost,
   deletePost,
   updatePost,
+  createPostReaction,
 } from "../data/repository";
 
 export default function Forum(props) {
@@ -76,16 +77,28 @@ export default function Forum(props) {
     }
   };
 
+  const createReactionObj = (post_id, is_liked) => {
+    const postReaction = {
+      username : props.user.username,
+      post_id: post_id,
+      is_liked: is_liked,
+    }
+
+    return postReaction;
+  }
   const handleReaction = async (event, post_id) => {
-    console.log("TRIGGER");
     event.preventDefault();
     // toggle btn
     // send req
     const name = event.currentTarget.name;
     if(name === "like"){
       console.log("Like rq" + post_id)
+      const postReaction = createReactionObj(post_id, true);
+      await createPostReaction(postReaction);
     }else if(name === "dislike"){
       console.log("DisLike rq" + post_id)
+      const postReaction = createReactionObj(post_id, false);
+      await createPostReaction(postReaction);
     }else {
       console.log("Name err!" + event.target.name)
     }
