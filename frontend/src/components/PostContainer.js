@@ -1,6 +1,9 @@
 import React from "react";
 
 export default function PostContainer(props) {
+
+  //useReducer for number of likes/dislikes ?
+
   const getNameFromUrl = (str) => {
     const pieces = str.split("\\");
     const last = pieces[pieces.length - 1];
@@ -25,6 +28,7 @@ export default function PostContainer(props) {
       <div className="row">
       <a
           href=""
+          id={"like-btn-" + props.post.post_id}
           className="btn like-btn reaction-btn"
           onClick={(event) => props.handleReaction(event, props.post.post_id)}
           name="like"
@@ -34,6 +38,7 @@ export default function PostContainer(props) {
         <div>&nbsp;</div>
         <a
           href=""
+          id={"dislike-btn-" + props.post.post_id}
           className="btn dislike-btn reaction-btn"
           onClick={(event) => props.handleReaction(event, props.post.post_id)}
           name="dislike"

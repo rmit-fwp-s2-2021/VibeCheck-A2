@@ -8,6 +8,8 @@ module.exports = (express, app) => {
 
   router.post("/", controller.create);
 
+  router.put("/select/:post_id/:username", controller.update);
+
   router.delete("/select/:post_id/:username", controller.remove);
 
   app.use("/api/postReactions", router);

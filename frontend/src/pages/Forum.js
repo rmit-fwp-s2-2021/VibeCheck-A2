@@ -9,6 +9,9 @@ import {
   deletePost,
   updatePost,
   createPostReaction,
+  getPostReaction,
+  deletePostReaction,
+  updatePostReaction,
 } from "../data/repository";
 
 export default function Forum(props) {
@@ -79,30 +82,64 @@ export default function Forum(props) {
 
   const createReactionObj = (post_id, is_liked) => {
     const postReaction = {
-      username : props.user.username,
+      username: props.user.username,
       post_id: post_id,
       is_liked: is_liked,
-    }
+    };
 
     return postReaction;
-  }
+  };
   const handleReaction = async (event, post_id) => {
     event.preventDefault();
     // toggle btn
     // send req
     const name = event.currentTarget.name;
-    if(name === "like"){
-      console.log("Like rq" + post_id)
-      const postReaction = createReactionObj(post_id, true);
-      await createPostReaction(postReaction);
-    }else if(name === "dislike"){
-      console.log("DisLike rq" + post_id)
-      const postReaction = createReactionObj(post_id, false);
-      await createPostReaction(postReaction);
-    }else {
-      console.log("Name err!" + event.target.name)
+    const reaction = await getPostReaction(props.user.username, post_id);
+    console.log(reaction);
+    if (name === "like") {
+      // Check if post has reactions
+      if (reaction && reaction.is_liked != null) {
+
+        if (reaction.is_liked === true) {
+        // If like reaction exists, user wants to remove reaction.
+          await deletePostReaction(props.user.username, post_id);
+          return;
+        } else if (reaction.is_liked === false) {
+          // If dislike reaction exists, user wants to update with like.
+          const postReactionObj = createReactionObj(post_id, true);
+          await updatePostReaction(
+            props.user.username,
+            post_id,
+            postReactionObj
+          );
+        }
+      } else {
+        // If no previous reaction, user wants to create one.
+        const postReactionObj = createReactionObj(post_id, true);
+        await createPostReaction(postReactionObj);
+      }
+
+    } else if (name === "dislike") {
+      if (reaction && reaction.is_liked != null) {
+        if (reaction.is_liked === false) {
+          await deletePostReaction(props.user.username, post_id);
+          return;
+        } else if (reaction.is_liked === true) {
+          const postReactionObj = createReactionObj(post_id, false);
+          await updatePostReaction(
+            props.user.username,
+            post_id,
+            postReactionObj
+          );
+        }
+      } else {
+        const postReactionObj = createReactionObj(post_id, false);
+        await createPostReaction(postReactionObj);
+      }
+    } else {
+      console.log("Name err!" + event.target.name);
     }
-  }
+  };
 
   const handleReply = async (parent_post_id) => {
     history.push(`/reply/${parent_post_id}`);

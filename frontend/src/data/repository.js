@@ -171,6 +171,30 @@ async function createPostReaction(postReaction) {
   return response.data;
 }
 
+/**
+ * Sends HTTP PUT request to api to update a post reaction.
+ * @param {string} username User who reacted
+ * @param {int} post_id Post that has the reaction to update.
+ * @param {Object} postReaction fields to update
+ * @returns {Object} response data object from api.
+ */
+async function updatePostReaction(username, post_id, postReaction) {
+  let response = null;
+  try {
+    response = await axios.put(
+      `${API_HOST}${POST_REACTION_ROUTE}/select/${post_id}/${username}`,
+      postReaction
+    );
+  } catch (e) {
+    console.log(
+      `Unable to update post reaction ${postReaction} for user ${username}. ${e}`
+    );
+    return;
+  }
+
+  return response.data;
+}
+
 async function deletePostReaction(username, post_id) {
   let response = null;
   try {
@@ -211,6 +235,7 @@ export {
   deletePost,
   getPostReaction,
   createPostReaction,
+  updatePostReaction,
   deletePostReaction,
   getUser,
   removeUser,
