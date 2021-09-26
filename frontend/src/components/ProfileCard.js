@@ -2,11 +2,18 @@ import React from "react";
 import { getHumanReadableDate } from "../Util";
 
 export default function ProfileCard(props) {
+
+  const getNameFromUrl = (str) => {
+    const pieces = str.split("\\");
+    const last = pieces[pieces.length - 1];
+    return last;
+  };
+
   return (
     <div className="card">
       <img
         className="card-img-top"
-        src={props.user.img_url ? props.user.img_url : "user.png"}
+        src={props.user.img_url ? "http://127.0.0.1:8887/" + getNameFromUrl(props.user.img_url) : "user.png"}
         alt="Card image cap"
       ></img>
       <div className="card-body">

@@ -43,7 +43,7 @@ async function updateUser(username, user) {
   try {
     response = await axios.put(API_HOST + `/api/users/${username}`, user);
   } catch (e) {
-    console.log(`Unable to update user ${username}. ${e}`);
+    console.log(`Unable to update user ${username} with ${user}. ${e}`);
     return;
   }
 

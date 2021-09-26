@@ -31,7 +31,6 @@ exports.login = async (req, res) => {
   //TODO track activity here ?
 };
 
-// Create a user in the database.
 exports.create = async (req, res) => {
   const hash = await argon2.hash(req.body.password, { type: argon2.argon2id });
   // insert into table.
@@ -45,17 +44,24 @@ exports.create = async (req, res) => {
   res.json(user);
 };
 
-// Update a user in the database.
 exports.update = async (req, res) => {
   const user = await db.user.findByPk(req.params.username);
 
   user.first_name = req.body.firstname;
   user.last_name = req.body.lastname;
   if(req.body.password){
-    const hash = await argon2.hash(req.body.password, { type: argon2.argon2id });
+    const hash = await argon2.hash(fields.password, { type: argon2.argon2id });
     user.password_hash = hash
   }
-  //TODO : img
+
+  // If image present in req, move to folder and update img_url
+  const uploaded_file = req.files ? req.files.img : null;
+  if (uploaded_file) {
+    const file_name = req.files.img.name;
+    const upload_path = process.cwd() + "\\public\\post\\" + file_name;
+    uploaded_file.mv(upload_path);
+    user.img_url = upload_path;
+  }
   await user.save();
 
   return res.json(user);

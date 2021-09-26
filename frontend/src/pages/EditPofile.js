@@ -11,16 +11,31 @@ export default function EditProfile(props) {
     password: "",
     confirmPassword: "",
   });
+  const [img, setImg] = useState(null);
+  const [img_preview, setImgPreview] = useState(null);
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (event) => {
     setFields({ ...fields, [event.target.name]: event.target.value });
   };
 
+  const handleFileChange = (event) => {
+    event.preventDefault();
+    const file = event.target.files[0];
+    setImg(file);
+    setImgPreview(URL.createObjectURL(file));
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await updateUser(props.user.username, trimFields());
+    const fields = trimFields()
+    const form_data = new FormData();
+    form_data.set("firstname", fields.firstname);
+    form_data.set("lastname", fields.lastname);
+
+    form_data.set("img", img);
+    await updateUser(props.user.username, form_data);
     history.push("/profile");
   };
 
@@ -33,7 +48,7 @@ export default function EditProfile(props) {
   };
 
   return (
-    <div>
+    <div className="edit-profile">
       <h1>Edit Profile</h1>
       <hr />
       <div className="row">
@@ -104,6 +119,19 @@ export default function EditProfile(props) {
               {errors.confirmPassword && (
                 <div className="text-danger">{errors.confirmPassword}</div>
               )}
+            </div>
+            <div className="form-group">
+              <label htmlFor="img" className="control-label">
+                Upload user avatar.
+              </label>
+              <br />
+              <input
+                type="file"
+                id="img"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+              {img_preview && <img src={img_preview} />}
             </div>
             <div className="form-group">
               <input
