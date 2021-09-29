@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { getAllUsers } from "../data/repository";
+import {
+  createFollowing,
+  deleteFollowing,
+  getAllUsers,
+} from "../data/repository";
 
 export default function Follow(props) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -19,12 +23,21 @@ export default function Follow(props) {
     setIsLoaded(true);
   };
 
-  const handleFollow = () => {
-    // TODO create entry in userFollows.
+  const handleFollow = async (event, user_recepient) => {
+    event.preventDefault();
+    const following = {
+      user_requester: props.user.username,
+      user_recepient: user_recepient,
+    };
+
+    await createFollowing(following);
+    await refreshUsers();
   };
 
-  const handleUnfollow = () => {
-    // TODO remove entry.
+  const handleUnfollow = async (event, user_recepient) => {
+    event.preventDefault();
+    await deleteFollowing(props.user.username, user_recepient);
+    await refreshUsers();
   };
 
   return (
@@ -53,7 +66,7 @@ export default function Follow(props) {
                 <td>{x.first_name}</td>
                 <td>{x.last_name}</td>
                 <td>
-                  <button className="btn btn-primary">Follow</button>
+                  <button className="btn btn-primary" onClick={event => handleFollow(event, x.username)}>Follow</button>
                 </td>
               </tr>
             ))}

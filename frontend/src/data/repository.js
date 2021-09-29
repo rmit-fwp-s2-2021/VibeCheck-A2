@@ -154,7 +154,7 @@ async function getPostReaction(username, post_id) {
   try {
     response = await axios.get(
       `${API_HOST}${POST_REACTION_ROUTE}select/${post_id}/${username}`
-    );      
+    );
   } catch (e) {
     console.log(`Unable to get reaction for post ${post_id}. ${e}`);
     return;
@@ -209,7 +209,7 @@ async function updatePostReaction(username, post_id, postReaction) {
 
 /**
  * Sends HTTP GET request to get post reactions with count.
- * @param {Number} post_id 
+ * @param {Number} post_id
  * @param {boolean} is_liked
  * @returns {object} response data from api.
  */
@@ -239,6 +239,48 @@ async function deletePostReaction(username, post_id) {
     );
     return;
   }
+}
+
+// --- User Followings ----------------------------------------------------------------------------
+const USER_FOLLOWS_ROUTE = "/api/userFollows";
+
+/**
+ *
+ * @param {object} fields
+ * @returns
+ */
+async function createFollowing(fields) {
+  let response = null;
+  try {
+    response = await axios.post(`${API_HOST}${USER_FOLLOWS_ROUTE}`, fields);
+  } catch (e) {
+    console.log(`Unable to create following with ${fields}. ${e}`);
+    return;
+  }
+
+  return response.data;
+}
+
+/**
+ *
+ * @param {string} user_requester
+ * @param {string} user_recepient
+ * @returns
+ */
+async function deleteFollowing(user_requester, user_recepient) {
+  let response = null;
+  try {
+    response = await axios.delete(
+      `${API_HOST}${USER_FOLLOWS_ROUTE}/${user_requester}/${user_recepient}`
+    );
+  } catch (e) {
+    console.log(
+      `Unable to delete following for ${user_requester} and ${user_recepient}. ${e}`
+    );
+    return;
+  }
+
+  return response.data;
 }
 
 // --- Helper functions to interact with local storage --------------------------------------------
@@ -271,6 +313,8 @@ export {
   updatePostReaction,
   getPostReactionCount,
   deletePostReaction,
+  createFollowing,
+  deleteFollowing,
   getUser,
   removeUser,
 };
