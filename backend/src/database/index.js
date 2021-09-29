@@ -55,6 +55,11 @@ db.userFollows.belongsTo(db.user, {
   as: "recepient",
 });
 
+db.user.hasMany(db.userFollows, {
+  foreignKey: "user_requester",
+  onDelete: 'cascade'
+})
+
 // Include a sync option with seed data logic included.
 db.sync = async () => {
   // // Sync schema.
