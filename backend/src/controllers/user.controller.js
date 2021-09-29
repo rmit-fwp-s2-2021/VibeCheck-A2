@@ -3,7 +3,7 @@
 const db = require("../database");
 const argon2 = require("argon2");
 
-// Select all users from the database.
+// Select all users with their following from the database.
 exports.all = async (req, res) => {
   const users = await db.user.findAll( {include: db.userFollows});
 
