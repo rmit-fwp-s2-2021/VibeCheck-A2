@@ -35,6 +35,10 @@ code {
   justify-content: flex-start;
 }
 
-.active-btn{
-  color: blue;
+.dislike-active-btn{
+  color: red;
+}
+
+.like-active-btn{
+  color: navy;
 }

@@ -134,7 +134,7 @@ const POST_REACTION_ROUTE = "/api/postReactions/";
 /**
  * Send HTTP GET request to get a post reaction.
  * @param {string} username Username of use who reacted on the post.
- * @param {int} post_id Id of post to get reactions for.
+ * @param {number} post_id Id of post to get reactions for.
  * @returns {object} response data object from api.
  */
 async function getPostReaction(username, post_id) {
@@ -142,9 +142,7 @@ async function getPostReaction(username, post_id) {
   try {
     response = await axios.get(
       `${API_HOST}${POST_REACTION_ROUTE}select/${post_id}/${username}`
-    );
-      
-      console.log(`${API_HOST}${POST_REACTION_ROUTE}select/${post_id}/${username}`);
+    );      
   } catch (e) {
     console.log(`Unable to get reaction for post ${post_id}. ${e}`);
     return;

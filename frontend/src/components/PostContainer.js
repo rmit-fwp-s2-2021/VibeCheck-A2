@@ -2,26 +2,29 @@ import React, { useEffect, useReducer, useState } from "react";
 import { getPostReaction, getPostReactionCount } from "../data/repository";
 
 export default function PostContainer(props) {
-
-  //useReducer for number of likes/dislikes ?
-  //const [state, dispatch] = useReducer(reducer, { count: 0 });
   const [like_count, setLikeCount] = useState(0);
   const [dislike_count, setDislikeCount] = useState(0);
-  const [is_liked, setIsLiked] = useState(false);
+  const [is_liked, setIsLiked] = useState(null);
 
   useEffect(() => {
     loadReactionCounts();
-   // toggleReactionBtns(props.post.post_id)
+    loadReaction();
   }, []);
 
+  const loadReaction = async () => {
+    const reaction = await getPostReaction(
+      props.user.username,
+      props.post.post_id
+    );
+    setIsLiked(reaction != null ? reaction.is_liked : null);
+  };
+
   const loadReactionCounts = async () => {
-    console.log("loading..")
     const like_count = await getPostReactionCount(props.post.post_id, true);
     setLikeCount(like_count.count);
     const dislike_count = await getPostReactionCount(props.post.post_id, false);
     setDislikeCount(dislike_count.count);
-    console.log("loaded..")
-  }
+  };
 
   const getNameFromUrl = (str) => {
     const pieces = str.split("\\");
@@ -29,38 +32,43 @@ export default function PostContainer(props) {
     return last;
   };
 
-  const toggleReactionBtns = async (post_id) => {
-    const curr_user = props.user.username
-    // get reactions by user.
-    // has user liked post ?
-    const reaction = await getPostReaction(curr_user, post_id);
-    console.log(curr_user);
-    console.log(post_id);
+  /**
+   *
+   * @param {string} name Name of btn (like or dislike)
+   */
+  const toggleActiveBtns = (name) => {
+    const post_id = props.post.post_id;
 
-    if(reaction.is_liked === true){
-      const ele = document.querySelector("#like-btn-"+post_id)
-      if(ele.classList.contains("active-btn")){
-        ele.classList.remove("active-btn");
-      }else{
-        ele.classList.add("active-btn");
+    const like_btn = document.querySelector("#like-btn-" + post_id);
+    const dislike_btn = document.querySelector("#dislike-btn-" + post_id);
 
+    if (name === "like") {
+      // Before highlighting, check and remove highlight of the other button.
+      if (dislike_btn.classList.contains("dislike-active-btn")) {
+        dislike_btn.classList.remove("dislike-active-btn");
       }
-      console.log(ele);
-    }else if(reaction.is_liked === false){
-      const ele = document.querySelector("#dislike-btn-"+post_id)
-      ele.classList.add("active-btn");
+      like_btn.classList.toggle("like-active-btn");
+    } else if (name === "dislike") {
+      if (like_btn.classList.contains("like-active-btn")) {
+        like_btn.classList.remove("like-active-btn");
+      }
+      dislike_btn.classList.toggle("dislike-active-btn");
     }
-  }
+  };
 
   const handleReactionClick = async (event, post_id) => {
+    const name = event.currentTarget.name;
+    event.preventDefault();
+
     // Update DB
     await props.handleReaction(event, post_id);
 
     // Update state
     await loadReactionCounts();
-   //TODO fix request call once await toggleReactionBtns(post_id);
-    // TODO Update UI toggle btn
-  }
+    
+    // Update button highlights
+    toggleActiveBtns(name);
+  };
 
   return (
     <div className="border my-3 p-3" style={{ whiteSpace: "pre-wrap" }}>
@@ -78,24 +86,38 @@ export default function PostContainer(props) {
         <div className="col-sm-6">{props.post.text}</div>
       </div>
       <div className="row">
-      <a
+        <a
           href=""
           id={"like-btn-" + props.post.post_id}
-          className="btn like-btn reaction-btn"
+          className={
+            is_liked != null && is_liked === true
+              ? "like-active-btn btn like-btn reaction-btn"
+              : "btn like-btn reaction-btn"
+          }
           onClick={(event) => handleReactionClick(event, props.post.post_id)}
           name="like"
         >
-          <span><i className="fas fa-thumbs-up"></i>{" " + like_count}</span>
+          <span>
+            <i className="fas fa-thumbs-up"></i>
+            {" " + like_count}
+          </span>
         </a>
         <div>&nbsp;</div>
         <a
           href=""
           id={"dislike-btn-" + props.post.post_id}
-          className="btn dislike-btn reaction-btn"
+          className={
+            is_liked != null && is_liked === false
+              ? "dislike-active-btn btn like-btn reaction-btn"
+              : "btn like-btn reaction-btn"
+          }
           onClick={(event) => handleReactionClick(event, props.post.post_id)}
           name="dislike"
         >
-          <span><i className="fas fa-thumbs-down"></i>{" " + dislike_count}</span>
+          <span>
+            <i className="fas fa-thumbs-down"></i>
+            {" " + dislike_count}
+          </span>
         </a>
       </div>
       <div className="row">
