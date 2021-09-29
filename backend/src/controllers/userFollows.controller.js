@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
 };
 
 exports.remove = async (req, res) => {
-  const follow_entry = await db.user.findOne({
+  const follow_entry = await db.userFollows.findOne({
     where: {
       user_requester: req.params.user_requester,
       user_recepient: req.params.user_recepient,

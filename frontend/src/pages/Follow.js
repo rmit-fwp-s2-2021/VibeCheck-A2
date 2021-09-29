@@ -9,6 +9,7 @@ export default function Follow(props) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [users, setUsers] = useState([]);
+  const [user_followings, setUserFollowings] = useState([]);
 
   useEffect(() => {
     refreshUsers();
@@ -19,7 +20,20 @@ export default function Follow(props) {
     setError(null);
 
     const users = await getAllUsers();
-    setUsers(users);
+
+    const current_user_followings = [];
+    for (const user of users) {
+      if (user.username === props.user.username) {
+        const user_followings = user.userFollows;
+        for (const following of user_followings) {
+          current_user_followings.push(following.user_recepient);
+        }
+      }
+    }
+    setUserFollowings(current_user_followings);
+
+    // remove current user.
+    setUsers(users.filter((user) => user.username != props.user.username));
     setIsLoaded(true);
   };
 
@@ -38,6 +52,10 @@ export default function Follow(props) {
     event.preventDefault();
     await deleteFollowing(props.user.username, user_recepient);
     await refreshUsers();
+  };
+
+  const isUserFollowing = (username) => {
+    return user_followings.includes(username);
   };
 
   return (
@@ -66,7 +84,21 @@ export default function Follow(props) {
                 <td>{x.first_name}</td>
                 <td>{x.last_name}</td>
                 <td>
-                  <button className="btn btn-primary" onClick={event => handleFollow(event, x.username)}>Follow</button>
+                  {isUserFollowing(x.username) ? (
+                    <button
+                      className="btn btn-danger"
+                      onClick={(event) => handleUnfollow(event, x.username)}
+                    >
+                      Unfollow
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-primary"
+                      onClick={(event) => handleFollow(event, x.username)}
+                    >
+                      Follow
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
