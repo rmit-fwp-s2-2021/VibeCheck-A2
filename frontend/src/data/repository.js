@@ -67,7 +67,7 @@ const POST_ROUTE = "/api/posts/";
 
 /**
  * Sends HTTP GET request to api.
- * @param {int} post_id id of post to get.
+ * @param {number} post_id id of post to get.
  * @returns response data from api
  */
 async function getPost(post_id) {

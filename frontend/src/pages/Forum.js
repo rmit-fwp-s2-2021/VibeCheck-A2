@@ -73,6 +73,7 @@ export default function Forum(props) {
 
   const handleEdit = async (post_id, form_data = undefined) => {
     if (form_data === undefined) {
+      console.log(post_id)
       setPostEditId(post_id); // flag post for editting by modal.
     } else {
       await updatePost(post_id_edit, form_data);
@@ -123,7 +124,6 @@ export default function Forum(props) {
       if (reaction && reaction.is_liked != null) {
         if (reaction.is_liked === false) {
           await deletePostReaction(props.user.username, post_id);
-         // return;
         } else if (reaction.is_liked === true) {
           const postReactionObj = createReactionObj(post_id, false);
           await updatePostReaction(
@@ -219,7 +219,7 @@ export default function Forum(props) {
           />
         )}
       </div>
-      <EditPostModal handleEdit={handleEdit} />
+      <EditPostModal post_id_edit={post_id_edit} handleEdit={handleEdit} />
     </div>
   );
 }

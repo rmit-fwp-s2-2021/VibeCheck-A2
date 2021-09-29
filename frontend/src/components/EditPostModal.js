@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { getPost } from "../data/repository";
 
 export default function EditPostModal(props) {
   const [post, setPost] = useState("");
   const [post_img, setPostImg] = useState(null);
   const [post_img_preview, setPostImgPreview] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  useEffect(() => {
+    loadPost();
+  }, [props.post_id_edit]);
+
+  const loadPost = async () => {
+      const post = await getPost(props.post_id_edit);
+      if (post) {
+        setPost(post.text);
+      }
+  };
 
   const handleInputChange = (event) => {
     setPost(event.target.value);
