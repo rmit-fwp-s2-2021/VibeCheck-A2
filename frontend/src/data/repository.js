@@ -62,6 +62,18 @@ async function deleteUser(username) {
   return response.data;
 }
 
+async function getAllUsers() {
+  let response = null;
+  try {
+    response = await axios.get(`${API_HOST}${USER_ROUTE}`);
+  } catch (e) {
+    console.log("Unable to get all users");
+    return;
+  }
+
+  return response.data;
+}
+
 // --- Post ---------------------------------------------------------------------------------------
 const POST_ROUTE = "/api/posts/";
 
@@ -245,6 +257,7 @@ function removeUser() {
 export {
   verifyUser,
   findUser,
+  getAllUsers,
   createUser,
   updateUser,
   deleteUser,

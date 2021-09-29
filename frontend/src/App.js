@@ -11,6 +11,7 @@ import { getUser, removeUser } from "./data/repository";
 import Register from "./pages/Register";
 import EditProfile from "./pages/EditPofile";
 import Reply from "./pages/Reply";
+import Follow from "./pages/Follow";
 
 function App() {
   const [user, setUser] = useState(getUser());
@@ -48,6 +49,9 @@ function App() {
               </Route>
               <Route path="/reply/:post_id">
                 <Reply user={user} />
+              </Route>
+              <Route path="/follow">
+                <Follow user={user} />
               </Route>
               <Route path="/">
                 <Home user={user} />
