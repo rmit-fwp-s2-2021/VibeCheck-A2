@@ -30,5 +30,5 @@ require("./src/routes/userFollows.routes.js")(express, app);
 // Set port, listen for requests.
 const PORT = 4000;
 app.listen(PORT, () => {
-  console.log(`Server is running at - http://localhost:${PORT}.`);
+  console.log(`Server is running on - http://localhost:${PORT}.`);
 });
