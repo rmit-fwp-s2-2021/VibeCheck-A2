@@ -62,6 +62,10 @@ async function deleteUser(username) {
   return response.data;
 }
 
+/**
+ * Get a list of user objects along with their following.
+ * @returns Response data from api.
+ */
 async function getAllUsers() {
   let response = null;
   try {

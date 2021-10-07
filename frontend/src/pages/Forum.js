@@ -48,6 +48,9 @@ export default function Forum(props) {
     if (trimmedPost === "") {
       setErrorMessage("A post cannot be empty.");
       return;
+    } else if (trimmedPost.length > 600) {
+      setErrorMessage("A post cannot be more than 600 characters.");
+      return;
     }
 
     const form_data = new FormData();
@@ -73,7 +76,6 @@ export default function Forum(props) {
 
   const handleEdit = async (post_id, form_data = undefined) => {
     if (form_data === undefined) {
-      console.log(post_id)
       setPostEditId(post_id); // flag post for editting by modal.
     } else {
       await updatePost(post_id_edit, form_data);
@@ -93,16 +95,15 @@ export default function Forum(props) {
 
   const handleReaction = async (event, post_id) => {
     //event.preventDefault();
-    
+
     const name = event.currentTarget.name;
     const reaction = await getPostReaction(props.user.username, post_id);
 
     if (name === "like") {
       // Check if post has reactions
       if (reaction && reaction.is_liked != null) {
-
         if (reaction.is_liked === true) {
-        // If like reaction exists, user wants to remove reaction.
+          // If like reaction exists, user wants to remove reaction.
           await deletePostReaction(props.user.username, post_id);
           //return;
         } else if (reaction.is_liked === false) {
@@ -119,7 +120,6 @@ export default function Forum(props) {
         const postReactionObj = createReactionObj(post_id, true);
         await createPostReaction(postReactionObj);
       }
-
     } else if (name === "dislike") {
       if (reaction && reaction.is_liked != null) {
         if (reaction.is_liked === false) {
