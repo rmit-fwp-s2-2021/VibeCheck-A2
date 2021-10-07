@@ -22,8 +22,9 @@ export default function MyProfile(props) {
     }
 
     await deleteUser(username);
-    props.logoutUser();
     history.push("/login");
+    props.logoutUser();
+
   };
 
   const handleEdit = async (username) => {

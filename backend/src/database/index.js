@@ -22,6 +22,8 @@ db.postReaction = require("./models/postReaction.js")(db.sequelize, DataTypes);
 // Relate post and user.
 db.post.belongsTo(db.user, {
   foreignKey: { name: "username", allowNull: false },
+  onDelete: "cascade",
+  onUpdate: "cascade",
 });
 
 // Relate postReactions with user and post.
@@ -48,25 +50,34 @@ db.post.hasMany(db.post, {
 db.userFollows.belongsTo(db.user, {
   foreignKey: { name: "user_requester", allowNull: false },
   as: "requester",
+  onDelete: "cascade",
+  onUpdate: "cascade",
 });
 
 db.userFollows.belongsTo(db.user, {
   foreignKey: { name: "user_recepient", allowNull: false },
   as: "recepient",
+  onDelete: "cascade",
+  onUpdate: "cascade",
 });
 
 db.user.hasMany(db.userFollows, {
   foreignKey: "user_requester",
-  onDelete: 'cascade'
-})
+  onDelete: "cascade",
+});
+db.user.hasMany(db.post, {
+  foreignKey: "username",
+  onDelete: "cascade",
+  onUpdate: "cascade",
+});
 
 // Include a sync option with seed data logic included.
 db.sync = async () => {
   // // Sync schema.
-  await db.sequelize.sync();
+  //await db.sequelize.sync();
 
   //Can sync with force if the schema has become out of date - note that syncing with force is a destructive operation.
-  //await db.sequelize.sync({ force: true });
+  await db.sequelize.sync({ force: true });
 
   await seedData();
 };
