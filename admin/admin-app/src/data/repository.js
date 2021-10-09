@@ -4,6 +4,10 @@ import { request, gql } from "graphql-request";
 const GRAPH_QL_URL = "http://localhost:4001/graphql";
 
 // --- User ---------------------------------------------------------------------------------------
+/**
+ * Gets a list of users with all their posts.
+ * @returns User list
+ */
 async function getUsers() {
   // Simply query with no parameters.
   const query = gql`
