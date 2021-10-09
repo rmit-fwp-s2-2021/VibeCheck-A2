@@ -97,17 +97,23 @@ async function createUser(user) {
   return data.create_user;
 }
 
+/**
+ * Update a user
+ * @param {FormData object} user 
+ * @returns object from api.
+ */
 async function updateUser(user) {
+  console.log(user);
   const query = gql`
     mutation ($username: String, $first_name: String, $last_name: String) {
       update_user(input: {
         username: $username,
         first_name: $first_name,
-        last_name: $last_name
+        last_name: $last_name,
       }) {
         username,
         first_name,
-        last_name
+        last_name,
       }
     }
   `;

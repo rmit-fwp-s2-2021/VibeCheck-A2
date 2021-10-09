@@ -38,6 +38,9 @@ async function createUser(user) {
   return response.data;
 }
 
+/**
+ * Send HTTP PUT request to update a user.
+ */
 async function updateUser(username, user) {
   let response = null;
   try {

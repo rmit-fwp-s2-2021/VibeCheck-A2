@@ -1,3 +1,4 @@
+// Some code was referenced from Week10 tute.
 const { buildSchema } = require("graphql");
 const db = require("../database");
 
@@ -25,6 +26,7 @@ graphql.schema = buildSchema(`
   type Post {
     post_id: Int,
     text: String,
+    parent_post_id: Int,
     img_url: String,
     is_deleted: Boolean
   }
@@ -76,11 +78,13 @@ graphql.root = {
     return user;
   },
   update_user: async (args) => {
+    console.log(args);
     const user = await db.user.findByPk(args.input.username);
 
     // Update user fields.
     user.first_name = args.input.first_name;
     user.last_name = args.input.last_name;
+    // user.password = args.input.password
 
     await user.save();
 

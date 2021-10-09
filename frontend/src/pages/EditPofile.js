@@ -29,7 +29,7 @@ export default function EditProfile(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const fields = trimFields()
+    const fields = trimFields();
     const form_data = new FormData();
     form_data.set("firstname", fields.firstname);
     form_data.set("lastname", fields.lastname);

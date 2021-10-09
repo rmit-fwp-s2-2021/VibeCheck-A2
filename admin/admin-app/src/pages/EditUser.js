@@ -2,7 +2,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import MessageContext from "../contexts/MessageContext";
-import { getUser } from "../data/repository";
+import { getUser, updateUser } from "../data/repository";
 
 export default function EditUser() {
   const [profile, setProfile] = useState(null);
@@ -35,7 +35,6 @@ export default function EditUser() {
     setFields(currentFields);
   };
 
-  // Generic change handler.
   const handleInputChange = (event) => {
     setFields({ ...fields, [event.target.name]: event.target.value });
   };
@@ -54,18 +53,18 @@ export default function EditUser() {
     const fields = trimFields();
 
     const form_data = new FormData();
-    form_data.set("firstname", fields.first_name);
-    form_data.set("lastname", fields.last_name);
+    form_data.set("first_name", fields.first_name);
+    form_data.set("last_name", fields.last_name);
     if (img != null) {
       form_data.set("img", img);
     }
     // TODO Update profile.
-
+    const response = await updateUser(fields);
     // Show success message.
     //setMessage(<><strong>{profile.first_name} {profile.last_name}</strong> profile has been updated successfully.</>);
 
     // Navigate to the profiles page.
-    history.push("/");
+    history.push("/users");
   };
 
   const handleValidation = () => {
@@ -107,11 +106,10 @@ export default function EditUser() {
   return (
     <>
       <h2>Update User {fields.username}</h2>
-
-      <div className="row">
-        <div className="col-md-6">
-          <br />
-          <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="col-md-6">
+            <br />
             {/* <div className="form-group">
             <label htmlFor="username" className="control-label">
               Username
@@ -132,7 +130,7 @@ export default function EditUser() {
                 First name
               </label>
               <input
-                name="firstname"
+                name="first_name"
                 id="firstname"
                 className="form-control"
                 value={fields.first_name}
@@ -147,8 +145,8 @@ export default function EditUser() {
                 Last name
               </label>
               <input
-                name="lastname"
-                id="firstname"
+                name="last_name"
+                id="lastname"
                 className="form-control"
                 value={fields.last_name}
                 onChange={handleInputChange}
@@ -202,25 +200,28 @@ export default function EditUser() {
                 Cancel
               </Link>
             </div>
-          </form>
-        </div>
-        <div className="col-md-6">
-          <br />
-          <div className="form-group">
-            <label htmlFor="img" className="control-label">
-              Update User Avatar
-            </label>
+          </div>
+          <div className="col-md-6">
             <br />
-            <input
-              type="file"
-              accept="image/*"
-              id="img"
-              onChange={handleFileChange}
-            />
-            {img_preview && <img src={img_preview} />}
+            <div className="form-group">
+              <label htmlFor="img" className="control-label">
+                Update User Avatar
+              </label>
+              <br />
+              <input
+                type="file"
+                accept="image/*"
+                id="img"
+                onChange={handleFileChange}
+              />
+              {fields.img_url != null && img_preview === null && (
+                <img src={fields.img_url} />
+              )}
+              {img_preview && <img src={img_preview} />}
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </>
   );
 }
