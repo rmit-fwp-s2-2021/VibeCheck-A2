@@ -33,7 +33,7 @@ export default function EditProfile(props) {
     const form_data = new FormData();
     form_data.set("firstname", fields.firstname);
     form_data.set("lastname", fields.lastname);
-
+    // TODO pwd ??
     form_data.set("img", img);
     await updateUser(props.user.username, form_data);
     history.push("/profile");

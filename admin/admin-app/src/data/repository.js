@@ -1,3 +1,5 @@
+// Some code was referenced from Matthew Bolger's Week 10 tute.
+
 import { request, gql } from "graphql-request";
 
 // --- Constants ----------------------------------------------------------------------------------
@@ -33,6 +35,11 @@ async function getUsers() {
   return data.all_users;
 }
 
+/**
+ * Get a user object
+ * @param {string} username 
+ * @returns User object.
+ */
 async function getUser(username) {
   // Query with parameters (variables).
   const query = gql`
