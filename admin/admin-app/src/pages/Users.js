@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Switch, Route, Link } from "react-router-dom";
-import { getUsers } from "../data/repository";
+import { blockUser, getUsers } from "../data/repository";
 
 export default function Users() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,14 +29,15 @@ export default function Users() {
     await refreshUsers();
   };
 
-  const blockUser = async (username) => {
-    if (
-        !window.confirm(`Are you sure you want to block User ID ${username} ?`)
-      ) {
-        return;
-      }
+  const toggleBlock = async (username, is_blocked) => {
+    let block = false;
+    if (is_blocked != null && is_blocked === true){
+        block = false;
+    }else if(is_blocked != null && is_blocked === false){
+        block = true;
+    }
 
-    // TODO sent block req
+    const response = await blockUser(username, block);
     await refreshUsers();
   }
 
@@ -75,9 +76,9 @@ export default function Users() {
               <td>
               <button
                   className="btn btn-secondary"
-                  onClick={() => deleteUser(x.username)}
+                  onClick={() => toggleBlock(x.username, x.is_blocked)}
                 >
-                  {x.is_blocked ? 'Unblock':'Block'}
+                  {(x.is_blocked != null && x.is_blocked === true) ? 'Unblock':'Block'}
                 </button>
               </td>
               <td>

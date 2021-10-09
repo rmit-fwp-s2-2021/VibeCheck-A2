@@ -15,15 +15,15 @@ async function getUsers() {
   const query = gql`
     {
       all_users {
-        username,
-        first_name,
-        last_name,
-        img_url,
-        is_blocked,
+        username
+        first_name
+        last_name
+        img_url
+        is_blocked
         posts {
-          post_id,
-          text,
-          img_url,
+          post_id
+          text
+          img_url
           is_deleted
         }
       }
@@ -37,7 +37,7 @@ async function getUsers() {
 
 /**
  * Get a user object
- * @param {string} username 
+ * @param {string} username
  * @returns User object.
  */
 async function getUser(username) {
@@ -45,10 +45,10 @@ async function getUser(username) {
   const query = gql`
     query ($username: String) {
       user(username: $username) {
-        username,
-        first_name,
-        last_name,
-        img_url,
+        username
+        first_name
+        last_name
+        img_url
         is_blocked
       }
     }
@@ -78,13 +78,15 @@ async function getUserExists(username) {
 async function createUser(user) {
   const query = gql`
     mutation ($username: String, $first_name: String, $last_name: String) {
-      create_user(input: {
-        username: $username,
-        first_name: $first_name,
-        last_name: $last_name
-      }) {
-        username,
-        first_name,
+      create_user(
+        input: {
+          username: $username
+          first_name: $first_name
+          last_name: $last_name
+        }
+      ) {
+        username
+        first_name
         last_name
       }
     }
@@ -99,21 +101,22 @@ async function createUser(user) {
 
 /**
  * Update a user
- * @param {FormData object} user 
+ * @param {FormData object} user
  * @returns object from api.
  */
 async function updateUser(user) {
-  console.log(user);
   const query = gql`
     mutation ($username: String, $first_name: String, $last_name: String) {
-      update_user(input: {
-        username: $username,
-        first_name: $first_name,
-        last_name: $last_name,
-      }) {
-        username,
-        first_name,
-        last_name,
+      update_user(
+        input: {
+          username: $username
+          first_name: $first_name
+          last_name: $last_name
+        }
+      ) {
+        username
+        first_name
+        last_name
       }
     }
   `;
@@ -123,6 +126,19 @@ async function updateUser(user) {
   const data = await request(GRAPH_QL_URL, query, variables);
 
   return data.update_user;
+}
+
+async function blockUser(username, is_blocked) {
+  const query = gql`
+    mutation ($username: String, $is_blocked: Boolean) {
+      block_user(username: $username, is_blocked: $is_blocked)
+    }
+  `;
+
+  const variables = { username, is_blocked };
+  const data = await request(GRAPH_QL_URL, query, variables);
+
+  return data.block_user;
 }
 
 async function deleteUser(username) {
@@ -139,6 +155,4 @@ async function deleteUser(username) {
   return data.delete_user;
 }
 
-export {
-  getUsers, getUser, getUserExists, createUser, updateUser, deleteUser
-}
+export { getUsers, getUser, getUserExists, createUser, updateUser, blockUser, deleteUser };

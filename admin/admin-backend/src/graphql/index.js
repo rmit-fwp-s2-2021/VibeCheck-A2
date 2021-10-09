@@ -52,7 +52,8 @@ graphql.schema = buildSchema(`
   type Mutation {
     create_user(input: UserInput): User,
     update_user(input: UserInput): User,
-    delete_user(username: String): Boolean
+    delete_user(username: String): Boolean,
+    block_user(username: String, is_blocked: Boolean): Boolean
   }
 `);
 
@@ -99,6 +100,15 @@ graphql.root = {
     await db.post.destroy({ where: { username: user.username } });
     await user.destroy();
 
+    return true;
+  },
+  block_user: async (args) => {
+    const user = await db.user.findByPk(args.username);
+    if (user === null) return false;
+
+    user.is_blocked = args.is_blocked;
+
+    await user.save();
     return true;
   },
 };
