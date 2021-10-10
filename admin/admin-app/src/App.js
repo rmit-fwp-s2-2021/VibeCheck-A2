@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import EditUser from "./pages/EditUser";
 import Users from "./pages/Users";
 import MessageContext from "./contexts/MessageContext";
+import Posts from "./pages/Posts";
 
 function App() {
   const [message, setMessage] = useState(null);
@@ -29,6 +30,9 @@ function App() {
               <Switch>
                 <Route path="/users">
                   <Users />
+                </Route>
+                <Route path="/posts">
+                  <Posts />
                 </Route>
                 <Route path="/edit/:username">
                   <EditUser />

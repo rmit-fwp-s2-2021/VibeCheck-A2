@@ -155,4 +155,45 @@ async function deleteUser(username) {
   return data.delete_user;
 }
 
-export { getUsers, getUser, getUserExists, createUser, updateUser, blockUser, deleteUser };
+// --- Post ---------------------------------------------------------------------------------------
+
+async function getPosts() {
+  const query = gql`
+    {
+      all_posts {
+        post_id
+        text
+        parent_post_id
+        img_url
+        is_deleted
+      }
+    }
+  `;
+  const data = await request(GRAPH_QL_URL, query);
+
+  return data.all_posts;
+}
+
+async function updatePostStatus(post_id, is_deleted) {
+  const query = gql`
+    mutation ($post_id: Int, $is_deleted: Boolean) {
+      update_post_status(post_id: $post_id, is_deleted: $is_blocked)
+    }
+  `;
+
+  const variables = { post_id, is_deleted };
+  const data = await request(GRAPH_QL_URL, query, variables);
+
+  return data.update_post_status;
+}
+export {
+  getUsers,
+  getUser,
+  getUserExists,
+  createUser,
+  updateUser,
+  blockUser,
+  deleteUser,
+  getPosts,
+  updatePostStatus,
+};

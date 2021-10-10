@@ -21,6 +21,7 @@ export default function Follow(props) {
 
     const users = await getAllUsers();
 
+    // Get current user's followings.
     const current_user_followings = [];
     for (const user of users) {
       if (user.username === props.user.username) {
@@ -70,7 +71,7 @@ export default function Follow(props) {
           <thead>
             <tr>
               <th>Username</th>
-              <th>Avatar</th>
+              <th>Email</th>
               <th>First Name</th>
               <th>Last Name</th>
               <th></th>
@@ -80,7 +81,7 @@ export default function Follow(props) {
             {users.map((x, index) => (
               <tr key={"user-" + index}>
                 <td>{x.username}</td>
-                <td>{x.username}</td>
+                <td>{x.email}</td>
                 <td>{x.first_name}</td>
                 <td>{x.last_name}</td>
                 <td>

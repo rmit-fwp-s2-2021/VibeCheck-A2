@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { blockUser, getUsers } from "../data/repository";
 
 export default function Users() {

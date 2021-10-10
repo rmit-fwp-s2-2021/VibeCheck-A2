@@ -44,6 +44,7 @@ graphql.schema = buildSchema(`
   # Queries (read-only operations).
   type Query {
     all_users: [User],
+    all_posts: [Post],
     user(username: String): User,
     user_exists(username: String): Boolean
   }
@@ -54,6 +55,7 @@ graphql.schema = buildSchema(`
     update_user(input: UserInput): User,
     delete_user(username: String): Boolean,
     block_user(username: String, is_blocked: Boolean): Boolean
+    update_post_status(post_id: Int, is_deleted: Boolean): Boolean
   }
 `);
 
@@ -62,6 +64,9 @@ graphql.root = {
   // Queries.
   all_users: async () => {
     return await db.user.findAll({ include: { model: db.post, as: "posts" } });
+  },
+  all_posts: async () => {
+    return await db.post.findAll();
   },
   user: async (args) => {
     return await db.user.findByPk(args.username);
@@ -111,6 +116,15 @@ graphql.root = {
     await user.save();
     return true;
   },
+  update_post_status: async (args) => {
+    const post = await db.post.findByPk(args.post_id);
+    if (post === null) return false;
+
+    post.is_deleted = args.is_deleted;
+
+    await post.save();
+    return true;
+  }
 };
 
 module.exports = graphql;

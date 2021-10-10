@@ -74,10 +74,10 @@ db.user.hasMany(db.post, {
 // Include a sync option with seed data logic included.
 db.sync = async () => {
   // // Sync schema.
-  //await db.sequelize.sync();
+  await db.sequelize.sync();
 
   //Can sync with force if the schema has become out of date - note that syncing with force is a destructive operation.
-  await db.sequelize.sync({ force: true });
+  //await db.sequelize.sync({ force: true });
 
   await seedData();
 };
