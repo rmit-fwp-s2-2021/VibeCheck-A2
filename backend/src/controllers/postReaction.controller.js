@@ -13,7 +13,7 @@ exports.count = async (req, res) => {
   if (req.params.is_liked != "true"  && req.params.is_liked != "false") {
     return null;
   }
-  const reaction_count = await db.postReaction.findAndCountAll({
+  const reaction_count = await db.postReaction.count({
     where: {
       post_id: req.params.post_id,
       is_liked: JSON.parse(req.params.is_liked),

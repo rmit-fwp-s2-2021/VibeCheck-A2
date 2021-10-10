@@ -39,6 +39,7 @@ exports.create = async (req, res) => {
     password_hash: hash,
     first_name: req.body.firstname,
     last_name: req.body.lastname,
+    email: req.body.email,
   });
 
   res.json(user);
@@ -49,8 +50,9 @@ exports.update = async (req, res) => {
 
   user.first_name = req.body.firstname;
   user.last_name = req.body.lastname;
+  user.email = req.body.email;
   if(req.body.password){
-    const hash = await argon2.hash(fields.password, { type: argon2.argon2id });
+    const hash = await argon2.hash(req.body.password, { type: argon2.argon2id });
     user.password_hash = hash
   }
 

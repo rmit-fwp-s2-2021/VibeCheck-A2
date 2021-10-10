@@ -18,14 +18,19 @@ module.exports = (sequelize, DataTypes) =>
         type: DataTypes.STRING(40),
         allowNull: false,
       },
+      email: {
+        type: DataTypes.STRING(40),
+        allowNull: false,
+      },
       img_url: {
-          type: DataTypes.STRING(400),
-          allowNull: true,
+        type: DataTypes.STRING(400),
+        allowNull: true,
       },
       is_blocked: {
-          type: DataTypes.BOOLEAN(),
-          allowNull: true,
-      }
+        type: DataTypes.BOOLEAN(),
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       // Add the timestamp attributes (updated_at, created_at).

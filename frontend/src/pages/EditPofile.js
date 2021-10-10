@@ -8,6 +8,7 @@ export default function EditProfile(props) {
   const [fields, setFields] = useState({
     firstname: props.user.first_name,
     lastname: props.user.last_name,
+    email: props.user.email,
     password: "",
     confirmPassword: "",
   });
@@ -33,8 +34,11 @@ export default function EditProfile(props) {
     const form_data = new FormData();
     form_data.set("firstname", fields.firstname);
     form_data.set("lastname", fields.lastname);
-    // TODO pwd ??
-    form_data.set("img", img);
+    form_data.set("password", fields.password);
+    form_data.set("email", fields.email);
+    if (img) {
+      form_data.set("img", img);
+    }
     await updateUser(props.user.username, form_data);
     history.push("/profile");
   };
@@ -83,6 +87,22 @@ export default function EditProfile(props) {
               />
               {errors.lastname && (
                 <div className="text-danger">{errors.lastname}</div>
+              )}
+            </div>
+            <div className="form-group">
+              <label htmlFor="email" className="control-label">
+                Email
+              </label>
+              <input
+                name="email"
+                type="email"
+                id="email"
+                className="form-control"
+                value={fields.email}
+                onChange={handleInputChange}
+              />
+              {errors.email && (
+                <div className="text-danger">{errors.email}</div>
               )}
             </div>
             <div className="form-group">

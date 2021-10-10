@@ -94,8 +94,6 @@ export default function Forum(props) {
   };
 
   const handleReaction = async (event, post_id) => {
-    //event.preventDefault();
-
     const name = event.currentTarget.name;
     const reaction = await getPostReaction(props.user.username, post_id);
 

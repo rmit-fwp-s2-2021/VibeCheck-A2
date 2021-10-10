@@ -74,10 +74,10 @@ db.user.hasMany(db.post, {
 // Include a sync option with seed data logic included.
 db.sync = async () => {
   // // Sync schema.
-  await db.sequelize.sync();
+  //await db.sequelize.sync();
 
   //Can sync with force if the schema has become out of date - note that syncing with force is a destructive operation.
-  //await db.sequelize.sync({ force: true });
+  await db.sequelize.sync({ force: true });
 
   await seedData();
 };
@@ -96,6 +96,7 @@ async function seedData() {
     password_hash: hash,
     first_name: "Matthew",
     last_name: "Bolger",
+    email: "mbolger@gmail.com",
   });
 
   hash = await argon2.hash("def456", { type: argon2.argon2id });
@@ -104,6 +105,7 @@ async function seedData() {
     password_hash: hash,
     first_name: "Shekhar",
     last_name: "Kalra",
+    email: "shekhar@gmail.com",
   });
 }
 

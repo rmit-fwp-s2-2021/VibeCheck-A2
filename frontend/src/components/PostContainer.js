@@ -21,9 +21,9 @@ export default function PostContainer(props) {
 
   const loadReactionCounts = async () => {
     const like_count = await getPostReactionCount(props.post.post_id, true);
-    setLikeCount(like_count.count);
+    setLikeCount(like_count);
     const dislike_count = await getPostReactionCount(props.post.post_id, false);
-    setDislikeCount(dislike_count.count);
+    setDislikeCount(dislike_count);
   };
 
   const getNameFromUrl = (str) => {
