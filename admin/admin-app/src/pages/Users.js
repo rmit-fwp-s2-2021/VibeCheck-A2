@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { blockUser, getUsers } from "../data/repository";
+import { blockUser, deleteUser, getUsers } from "../data/repository";
 
 export default function Users() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -19,27 +19,28 @@ export default function Users() {
     setIsLoaded(true);
   };
 
-  const deleteUser = async (username) => {
+  const deleteUserClick = async (event, username) => {
+    console.log(event)
     if (
       !window.confirm(`Are you sure you want to delete User ID ${username} ?`)
     ) {
       return;
     }
-    //TODO send del request
+    await deleteUser(username);
     await refreshUsers();
   };
 
   const toggleBlock = async (username, is_blocked) => {
     let block = false;
-    if (is_blocked != null && is_blocked === true){
-        block = false;
-    }else if(is_blocked != null && is_blocked === false){
-        block = true;
+    if (is_blocked != null && is_blocked === true) {
+      block = false;
+    } else if (is_blocked != null && is_blocked === false) {
+      block = true;
     }
 
     const response = await blockUser(username, block);
     await refreshUsers();
-  }
+  };
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -69,22 +70,22 @@ export default function Users() {
               <td>{x.first_name}</td>
               <td>{x.last_name}</td>
               <td>
-                <Link to={`/edit/${x.username}`}>
-                  Edit
-                </Link>
+                <Link to={`/edit/${x.username}`}>Edit</Link>
               </td>
               <td>
-              <button
+                <button
                   className="btn btn-secondary"
                   onClick={() => toggleBlock(x.username, x.is_blocked)}
                 >
-                  {(x.is_blocked != null && x.is_blocked === true) ? 'Unblock':'Block'}
+                  {x.is_blocked != null && x.is_blocked === true
+                    ? "Unblock"
+                    : "Block"}
                 </button>
               </td>
               <td>
                 <button
                   className="btn btn-danger"
-                  onClick={() => deleteUser(x.username)}
+                  onClick={(event) => deleteUserClick(event, x.username)}
                 >
                   Delete
                 </button>
