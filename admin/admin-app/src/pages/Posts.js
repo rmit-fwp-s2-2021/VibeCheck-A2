@@ -19,6 +19,12 @@ export default function Posts() {
     setIsLoaded(true);
   };
 
+  const getNameFromUrl = (str) => {
+    const pieces = str.split("\\");
+    const last = pieces[pieces.length - 1];
+    return last;
+  };
+
   const toggleDelete = async (event, post) => {
     event.preventDefault();
     const post_id = post.post_id;
@@ -54,7 +60,7 @@ export default function Posts() {
             <tr key={x.post_id}>
               <td>{x.post_id}</td>
               <td>{x.text}</td>
-              <td>{x.img_url ? <img src={x.img_url} /> : "No img"}</td>
+              <td>{x.img_url ? <img src={"http://127.0.0.1:8887/" + getNameFromUrl(x.img_url)} /> : "No img"}</td>
               <td>
                 {x.parent_post_id
                   ? "Reply to " + x.parent_post_id
