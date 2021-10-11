@@ -21,6 +21,7 @@ graphql.schema = buildSchema(`
     img_url: String,
     is_blocked: Boolean
     posts: [Post]
+    userFollows: [UserFollows]
   }
 
   type Post {
@@ -29,6 +30,11 @@ graphql.schema = buildSchema(`
     parent_post_id: Int,
     img_url: String,
     is_deleted: Boolean
+  }
+
+  type UserFollows {
+    user_requester: String,
+    user_recepient: String
   }
 
   # The input type can be used for incoming data.
@@ -45,6 +51,7 @@ graphql.schema = buildSchema(`
   type Query {
     all_users: [User],
     all_posts: [Post],
+    all_user_followings(username: String): [UserFollows]
     user(username: String): User,
     user_exists(username: String): Boolean
   }
@@ -63,10 +70,28 @@ graphql.schema = buildSchema(`
 graphql.root = {
   // Queries.
   all_users: async () => {
-    return await db.user.findAll({ include: { model: db.post, as: "posts" } });
+    return await db.user.findAll({
+      include: [
+        {
+          model: db.post,
+          as: "posts",
+        },
+        {
+          model: db.userFollows,
+          as: "userFollows",
+        },
+      ],
+    });
   },
   all_posts: async () => {
     return await db.post.findAll();
+  },
+  all_user_followings: async (args) => {
+    return await db.userFollows.findAll({
+      where: {
+        user_requester: args.username,
+      },
+    });
   },
   user: async (args) => {
     return await db.user.findByPk(args.username);
@@ -124,7 +149,7 @@ graphql.root = {
 
     await post.save();
     return true;
-  }
+  },
 };
 
 module.exports = graphql;

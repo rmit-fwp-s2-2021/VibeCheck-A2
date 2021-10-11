@@ -7,7 +7,7 @@ const GRAPH_QL_URL = "http://localhost:4001/graphql";
 
 // --- User ---------------------------------------------------------------------------------------
 /**
- * Gets a list of users with all their posts.
+ * Gets a list of users with all their posts and followings.
  * @returns User list
  */
 async function getUsers() {
@@ -25,6 +25,9 @@ async function getUsers() {
           text
           img_url
           is_deleted
+        }
+        userFollows {
+          user_recepient
         }
       }
     }
@@ -59,6 +62,22 @@ async function getUser(username) {
   const data = await request(GRAPH_QL_URL, query, variables);
 
   return data.user;
+}
+
+
+async function getUserFollowings(username){
+  const query = gql`
+  query ($username: String){
+    all_user_followings(username: $username){
+      user_recepient
+    }
+  }
+`;
+
+  const variables = {username}
+  const data = await request(GRAPH_QL_URL, query, variables);
+
+  return data.all_user_followings;
 }
 
 async function getUserExists(username) {

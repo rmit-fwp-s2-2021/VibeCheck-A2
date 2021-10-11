@@ -7,6 +7,7 @@ import EditUser from "./pages/EditUser";
 import Users from "./pages/Users";
 import MessageContext from "./contexts/MessageContext";
 import Posts from "./pages/Posts";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   const [message, setMessage] = useState(null);
@@ -36,6 +37,9 @@ function App() {
                 </Route>
                 <Route path="/edit/:username">
                   <EditUser />
+                </Route>
+                <Route path="/">
+                  <Dashboard />
                 </Route>
               </Switch>
             </div>
