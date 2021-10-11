@@ -20,7 +20,6 @@ export default function Users() {
   };
 
   const deleteUserClick = async (event, username) => {
-    console.log(event)
     if (
       !window.confirm(`Are you sure you want to delete User ID ${username} ?`)
     ) {

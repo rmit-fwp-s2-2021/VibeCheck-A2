@@ -177,7 +177,7 @@ async function getPosts() {
 async function updatePostStatus(post_id, is_deleted) {
   const query = gql`
     mutation ($post_id: Int, $is_deleted: Boolean) {
-      update_post_status(post_id: $post_id, is_deleted: $is_blocked)
+      update_post_status(post_id: $post_id, is_deleted: $is_deleted)
     }
   `;
 
