@@ -1,5 +1,5 @@
 // Some code was referenced from docs: https://github.com/reactchartjs/react-chartjs-2/blob/7070c25645b769e40729b7b16f060e46757064e4/example/src/charts/VerticalBar.js
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Bar } from "react-chartjs-2";
 
 export default function UserFollowedBar(props) {
@@ -7,13 +7,12 @@ export default function UserFollowedBar(props) {
     const getData = () => {
         const users = props.users;
         const labels = users.map(x => x.username);
-        //const n_data = users.map(x => x.userFollows.length)
         // get all recepients of each user and check how many of those recepients are curr user.
         const n_data = []
         for(const username of labels){
             let count = 0
             for(const user of users){
-                if (user.userFollows.length != 0){
+                if (user.userFollows.length !== 0){
                     const recepients = user.userFollows.map(x => x.user_recepient)
                     if (recepients.includes(username)){
                         count++;
@@ -45,7 +44,7 @@ export default function UserFollowedBar(props) {
                 }
             ],
         };
-
+        console.log(data)
         return data
     }
 

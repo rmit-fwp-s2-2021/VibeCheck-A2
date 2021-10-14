@@ -64,17 +64,16 @@ async function getUser(username) {
   return data.user;
 }
 
-
-async function getUserFollowings(username){
+async function getUserFollowings(username) {
   const query = gql`
-  query ($username: String){
-    all_user_followings(username: $username){
-      user_recepient
+    query ($username: String) {
+      all_user_followings(username: $username) {
+        user_recepient
+      }
     }
-  }
-`;
+  `;
 
-  const variables = {username}
+  const variables = { username };
   const data = await request(GRAPH_QL_URL, query, variables);
 
   return data.all_user_followings;
@@ -176,6 +175,10 @@ async function deleteUser(username) {
 
 // --- Post ---------------------------------------------------------------------------------------
 
+/**
+ * Get all posts with their associated reactions.
+ * @returns list of posts with their reactions.
+ */
 async function getPosts() {
   const query = gql`
     {
@@ -205,6 +208,22 @@ async function updatePostStatus(post_id, is_deleted) {
 
   return data.update_post_status;
 }
+
+async function getPostReactions(){
+  const query = gql`
+  {
+    all_reactions{
+      username
+      post_id
+      is_liked
+    }
+  }
+  `
+  const data = await request(GRAPH_QL_URL, query);
+
+  return data.all_reactions;
+}
+
 export {
   getUsers,
   getUser,
@@ -214,5 +233,6 @@ export {
   blockUser,
   deleteUser,
   getPosts,
+  getPostReactions,
   updatePostStatus,
 };

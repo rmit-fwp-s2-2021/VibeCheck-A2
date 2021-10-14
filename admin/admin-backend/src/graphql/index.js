@@ -30,6 +30,13 @@ graphql.schema = buildSchema(`
     parent_post_id: Int,
     img_url: String,
     is_deleted: Boolean
+    postReaction: [PostReaction]
+  }
+
+  type PostReaction {
+    username: String,
+    post_id: Int,
+    is_liked: Boolean
   }
 
   type UserFollows {
@@ -52,6 +59,7 @@ graphql.schema = buildSchema(`
     all_users: [User],
     all_posts: [Post],
     all_user_followings(username: String): [UserFollows]
+    all_reactions: [PostReaction]
     user(username: String): User,
     user_exists(username: String): Boolean
   }
@@ -84,7 +92,10 @@ graphql.root = {
     });
   },
   all_posts: async () => {
-    return await db.post.findAll();
+    return await db.post.findAll({ include: db.postReaction });
+  },
+  all_reactions: async () => {
+    return await db.postReaction.findAll();
   },
   all_user_followings: async (args) => {
     return await db.userFollows.findAll({
@@ -115,8 +126,8 @@ graphql.root = {
     // Update user fields.
     user.first_name = args.input.first_name;
     user.last_name = args.input.last_name;
-    // user.password = args.input.password
-
+    //TODO user.password = args.input.password
+    // TODO img
     await user.save();
 
     return user;

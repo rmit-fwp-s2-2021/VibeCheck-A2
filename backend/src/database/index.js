@@ -46,6 +46,12 @@ db.post.hasMany(db.post, {
   onDelete: "cascade",
 });
 
+db.post.hasMany(db.postReaction, {
+  foreignKey: { name: "post_id", allowNull: false },
+  onUpdate: "cascade",
+  onDelete: "cascade",
+});
+
 // Relate userFollows with user
 db.userFollows.belongsTo(db.user, {
   foreignKey: { name: "user_requester", allowNull: false },
@@ -77,7 +83,7 @@ db.sync = async () => {
   await db.sequelize.sync();
 
   //Can sync with force if the schema has become out of date - note that syncing with force is a destructive operation.
-  // await db.sequelize.sync({ force: true });
+  //await db.sequelize.sync({ force: true });
 
   await seedData();
 };

@@ -46,6 +46,12 @@ db.post.hasMany(db.post, {
   onDelete: "cascade",
 });
 
+db.post.hasMany(db.postReaction, {
+  foreignKey: { name: "post_id", allowNull: false },
+  onUpdate: "cascade",
+  onDelete: "cascade",
+});
+
 // Relate userFollows with user
 db.userFollows.belongsTo(db.user, {
   foreignKey: { name: "user_requester", allowNull: false },
