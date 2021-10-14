@@ -5,7 +5,7 @@ const argon2 = require("argon2");
 
 // Select all users with their following from the database.
 exports.all = async (req, res) => {
-  const users = await db.user.findAll( {include: db.userFollows});
+  const users = await db.user.findAll({ include: db.userFollows });
 
   res.json(users);
 };
@@ -51,9 +51,11 @@ exports.update = async (req, res) => {
   user.first_name = req.body.firstname;
   user.last_name = req.body.lastname;
   user.email = req.body.email;
-  if(req.body.password){
-    const hash = await argon2.hash(req.body.password, { type: argon2.argon2id });
-    user.password_hash = hash
+  if (req.body.password) {
+    const hash = await argon2.hash(req.body.password, {
+      type: argon2.argon2id,
+    });
+    user.password_hash = hash;
   }
 
   // If image present in req, move to folder and update img_url

@@ -24,6 +24,10 @@ export default function Login(props) {
       setFields({ ...fields, password: "" });
       setErrorMessage("Username and / or password invalid, please try again.");
       return;
+    } else if(user.is_blocked){
+      setFields({ ...fields, password: "" });
+      setErrorMessage("Account blocked by admin.");
+      return;
     }
 
     // Set user state.

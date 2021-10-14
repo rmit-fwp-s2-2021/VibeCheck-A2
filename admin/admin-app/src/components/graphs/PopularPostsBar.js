@@ -83,7 +83,7 @@ export default function PopularPostsBar(props) {
   return (
     <>
       <div className="header">
-        <h2 className="title">Popular posts of all time.</h2>
+        <h2 className="title">Posts (y-axis) against post score (x-axis)</h2>
       </div>
       <Bar data={getData} options={options} />
     </>
