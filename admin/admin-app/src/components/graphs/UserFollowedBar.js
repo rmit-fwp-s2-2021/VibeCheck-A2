@@ -2,12 +2,27 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 
-export default function UserFollowingBar(props) {
+export default function UserFollowedBar(props) {
 
     const getData = () => {
         const users = props.users;
         const labels = users.map(x => x.username);
-        const n_data = users.map(x => x.userFollows.length)
+        //const n_data = users.map(x => x.userFollows.length)
+        // get all recepients of each user and check how many of those recepients are curr user.
+        const n_data = []
+        for(const username of labels){
+            let count = 0
+            for(const user of users){
+                if (user.userFollows.length != 0){
+                    const recepients = user.userFollows.map(x => x.user_recepient)
+                    if (recepients.includes(username)){
+                        count++;
+                    }
+                    n_data.push(count);
+                }
+
+            }
+        }
         const red_bg_color = "rgba(255, 99, 132, 0.2)"
         const blue_bg_color = "rgba(54, 162, 235, 0.2)"
         const bg_colors = []
@@ -23,7 +38,7 @@ export default function UserFollowingBar(props) {
             labels: labels,
             datasets: [
                 {
-                    label: "# of followings",
+                    label: "# of followers",
                     data: n_data,
                     backgroundColor: bg_colors,
                     borderWidth: 1,
@@ -49,7 +64,7 @@ export default function UserFollowingBar(props) {
   return (
     <>
       <div className="header">
-        <h2 className="title">Number of followings (y-axis) against users (x-axis)</h2>
+        <h2 className="title">Number of followers (y-axis) against users (x-axis)</h2>
       </div>
       <Bar data={getData()} options={options} />
     </>

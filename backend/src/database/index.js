@@ -77,7 +77,7 @@ db.sync = async () => {
   await db.sequelize.sync();
 
   //Can sync with force if the schema has become out of date - note that syncing with force is a destructive operation.
-  //await db.sequelize.sync({ force: true });
+  // await db.sequelize.sync({ force: true });
 
   await seedData();
 };
@@ -106,6 +106,24 @@ async function seedData() {
     first_name: "Shekhar",
     last_name: "Kalra",
     email: "shekhar@gmail.com",
+  });
+
+  hash = await argon2.hash("abcabc", { type: argon2.argon2id });
+  await db.user.create({
+    username: "redgrave",
+    password_hash: hash,
+    first_name: "Abir",
+    last_name: "Ishtiaque",
+    email: "abir.ishtiaque@yahoo.com",
+  });
+
+  hash = await argon2.hash("abc123", { type: argon2.argon2id });
+  await db.user.create({
+    username: "bigMan",
+    password_hash: hash,
+    first_name: "Big",
+    last_name: "Man",
+    email: "bigman@yahoo.com",
   });
 }
 
