@@ -28,7 +28,6 @@ exports.login = async (req, res) => {
     // Login failed.
     res.json(null);
   else res.json(user);
-  //TODO track activity here ?
 };
 
 exports.create = async (req, res) => {

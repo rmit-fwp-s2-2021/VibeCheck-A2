@@ -10,6 +10,7 @@ export default function EditUser() {
   const [img, setImg] = useState(null);
   const [img_preview, setImgPreview] = useState(null);
   const [errors, setErrors] = useState({});
+  const [password, setPassword] = useState('');
   const { setMessage } = useContext(MessageContext);
   const history = useHistory();
   const { username } = useParams();
@@ -39,6 +40,10 @@ export default function EditUser() {
     setFields({ ...fields, [event.target.name]: event.target.value });
   };
 
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  }
+
   const handleFileChange = (event) => {
     event.preventDefault();
     const file = event.target.files[0];
@@ -50,18 +55,24 @@ export default function EditUser() {
     event.preventDefault();
 
     // Validate form and if invalid do not contact API.
-    const fields = trimFields();
 
-    const form_data = new FormData();
-    form_data.set("first_name", fields.first_name);
-    form_data.set("last_name", fields.last_name);
-    if (img != null) {
-      form_data.set("img", img);
+    // const form_data = new FormData();
+    const user = {
+      first_name: fields.first_name,
+      last_name: fields.last_name,
+      email: fields.email
     }
-    // TODO Update profile.
-    const response = await updateUser(fields);
+    // form_data.set("first_name", fields.first_name);
+    // form_data.set("last_name", fields.last_name);
+    // if (img != null) {
+    //   form_data.set("img", img);
+    // }
+    if(password !== ''){
+      user.password = password;
+    }
+    const response = await updateUser(fields.username, fields.first_name, fields.last_name, fields.email);
     // Show success message.
-    //setMessage(<><strong>{profile.first_name} {profile.last_name}</strong> profile has been updated successfully.</>);
+    setMessage(<><strong>{profile.first_name} {profile.last_name}</strong> profile has been updated successfully.</>);
 
     // Navigate to the profiles page.
     history.push("/users");
@@ -110,21 +121,6 @@ export default function EditUser() {
         <div className="row">
           <div className="col-md-6">
             <br />
-            {/* <div className="form-group">
-            <label htmlFor="username" className="control-label">
-              Username
-            </label>
-            <input
-              name="username"
-              id="username"
-              className="form-control"
-              value={fields.username}
-              onChange={handleInputChange}
-            />
-            {errors.username && (
-              <div className="text-danger">{errors.username}</div>
-            )}
-          </div> */}
             <div className="form-group">
               <label htmlFor="firstname" className="control-label">
                 First name
@@ -157,38 +153,38 @@ export default function EditUser() {
             </div>
             <div className="form-group">
               <label htmlFor="password" className="control-label">
+                Email{" "}
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                className="form-control"
+                value={fields.email}
+                onChange={handleInputChange}
+              />
+              {errors.password && (
+                <div className="text-danger">{errors.email}</div>
+              )}
+            </div>
+            <div className="form-group">
+              <label htmlFor="password" className="control-label">
                 Password{" "}
                 <small className="text-muted">
                   must be at least 6 characters
                 </small>
               </label>
-              <input
+              {/* <input
                 type="password"
                 name="password"
                 id="password"
                 className="form-control"
-                value={fields.password}
-                onChange={handleInputChange}
+                value={password}
+                onChange={handlePasswordChange}
               />
               {errors.password && (
-                <div className="text-danger">{errors.password}</div>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="confirmPassword" className="control-label">
-                Confirm password
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                id="confirmPassword"
-                className="form-control"
-                value={fields.confirmPassword}
-                onChange={handleInputChange}
-              />
-              {errors.confirmPassword && (
-                <div className="text-danger">{errors.confirmPassword}</div>
-              )}
+                <div className="text-danger">{password}</div>
+              )} */}
             </div>
             <div className="form-group">
               <input

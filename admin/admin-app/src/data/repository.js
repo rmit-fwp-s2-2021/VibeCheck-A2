@@ -18,7 +18,9 @@ async function getUsers() {
         username
         first_name
         last_name
+        email
         img_url
+        password_hash
         is_blocked
         posts {
           post_id
@@ -52,6 +54,7 @@ async function getUser(username) {
         first_name
         last_name
         img_url
+        email
         is_blocked
       }
     }
@@ -118,28 +121,33 @@ async function createUser(user) {
 }
 
 /**
- * Update a user
- * @param {FormData object} user
- * @returns object from api.
+ * 
+ * @param {*} first_name 
+ * @param {*} last_name 
+ * @param {*} email 
+ * @param {*} password 
+ * @returns 
  */
-async function updateUser(user) {
+async function updateUser(username, first_name, last_name, email) {
   const query = gql`
-    mutation ($username: String, $first_name: String, $last_name: String) {
+    mutation ($username: String, $first_name: String, $last_name: String, $email: String) {
       update_user(
         input: {
           username: $username
           first_name: $first_name
           last_name: $last_name
+          email: $email
         }
       ) {
         username
         first_name
         last_name
+        email
       }
     }
   `;
 
-  const variables = user;
+  const variables = {username, first_name, last_name, email};
 
   const data = await request(GRAPH_QL_URL, query, variables);
 

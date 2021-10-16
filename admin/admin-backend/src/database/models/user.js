@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) =>
         type: DataTypes.STRING(40),
         allowNull: false,
       },
+      email: {
+        type: DataTypes.STRING(40),
+        allowNull: false,
+      },
       img_url: {
           type: DataTypes.STRING(400),
           allowNull: true,

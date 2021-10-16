@@ -14,3 +14,18 @@ Run the api first and then the frontend with
 
 ## Database Design
 ![](ER_Diagram.png)
+
+<hr>
+## Admin Functionalities
+Start the admin-backend (GRAPHQL API) first and then the admin-app (React fronted) with the same <code>npm start</code>
+
+<ul>
+<li>Admin can update and block users.</li>
+<li>Admin is able to delete posts</li>
+</ul>
+<br>
+## Analytics
+React-Chart.Js was used to display graphs.
+<ul>
+<li>Admin can view popular posts. Posts are ranked by a popularity score which is measured by likes/dislikes and replies. Each like</li>
+

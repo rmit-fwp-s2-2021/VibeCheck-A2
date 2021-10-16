@@ -18,6 +18,7 @@ graphql.schema = buildSchema(`
     password_hash: String,
     first_name: String,
     last_name: String,
+    email: String,
     img_url: String,
     is_blocked: Boolean
     posts: [Post]
@@ -47,11 +48,19 @@ graphql.schema = buildSchema(`
   # The input type can be used for incoming data.
   input UserInput {
     username: String,
-    password_hash: String,
+    password: String,
     first_name: String,
     last_name: String,
     img_url: String,
+    email: String,
     is_blocked: Boolean
+  }
+
+  input UpdateUserInput {
+    username: String,
+    first_name: String,
+    last_name: String,
+    email: String,
   }
 
   # Queries (read-only operations).
@@ -67,7 +76,7 @@ graphql.schema = buildSchema(`
   # Mutations (modify data in the underlying data-source, i.e., the database).
   type Mutation {
     create_user(input: UserInput): User,
-    update_user(input: UserInput): User,
+    update_user(input: UpdateUserInput): User,
     delete_user(username: String): Boolean,
     block_user(username: String, is_blocked: Boolean): Boolean
     update_post_status(post_id: Int, is_deleted: Boolean): Boolean
@@ -122,11 +131,18 @@ graphql.root = {
   update_user: async (args) => {
     console.log(args);
     const user = await db.user.findByPk(args.input.username);
+    if (user === null) return null;
 
     // Update user fields.
     user.first_name = args.input.first_name;
     user.last_name = args.input.last_name;
-    //TODO user.password = args.input.password
+    user.email = args.input.email;
+    // if (args.input.password) {
+    //   const hash = await argon2.hash(args.input.password, {
+    //     type: argon2.argon2id,
+    //   });
+    //   user.password_hash = hash;
+    // }
     // TODO img
     await user.save();
 
