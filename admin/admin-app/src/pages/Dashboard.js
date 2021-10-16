@@ -17,7 +17,6 @@ export default function Dashboard() {
   const loadUsersAndPosts = async () => {
     const users = await getUsers();
     setUsers(users);
-    //const posts = users.map(x => x.posts)
     const posts = await getPosts();
     console.log(posts);
     setPosts(posts);
