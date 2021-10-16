@@ -22,8 +22,8 @@ export default function PostList(props) {
         // Render all posts and not replies to post.
         props.posts.map((x) => (
           <div key={x.post_id}>
-            {x.is_deleted === true ? (
-              <div className="card">Post has been deleted by admin</div>
+            {x.is_deleted === true && x.parent_post_id === null ? (
+              <div className="card red-text">Post has been deleted by admin</div>
             ) : (
               x.parent_post_id === null && (
                 <PostContainer
@@ -39,17 +39,21 @@ export default function PostList(props) {
             )}
 
             <div className="col-md-10 offset-md-2">
-              {getReplies(x.post_id).map((reply, i) => (
-                <PostContainer
-                  key={"reply-" + x.post_id + i}
-                  user={props.user}
-                  post={reply}
-                  handleEdit={props.handleEdit}
-                  handleDelete={props.handleDelete}
-                  handleReply={props.handleReply}
-                  handleReaction={props.handleReaction}
-                />
-              ))}
+              {getReplies(x.post_id).map((reply, i) =>
+                reply.is_deleted ? (
+                  <div className="card red-text">Post has been deleted by admin</div>
+                ) : (
+                  <PostContainer
+                    key={"reply-" + x.post_id + i}
+                    user={props.user}
+                    post={reply}
+                    handleEdit={props.handleEdit}
+                    handleDelete={props.handleDelete}
+                    handleReply={props.handleReply}
+                    handleReaction={props.handleReaction}
+                  />
+                )
+              )}
             </div>
           </div>
         ))
