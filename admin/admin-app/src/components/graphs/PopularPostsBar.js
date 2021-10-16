@@ -3,12 +3,14 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 
 export default function PopularPostsBar(props) {
-
   const getData = () => {
-    const posts = props.posts.filter((f) => f.parent_post_id === null);
+    // Do not get replies and deleted posts.
+    const posts = props.posts.filter(
+      (f) => f.parent_post_id === null && f.is_deleted === false
+    );
     const reactions = props.post_reactions;
 
-    const labels = posts.map((x) => x.post_id);
+    let labels = posts.map((x) => x.post_id);
     const n_data = [];
     /**
      * Algo
@@ -23,15 +25,22 @@ export default function PopularPostsBar(props) {
 
       const n_likes = post_rxns.filter((f) => f.is_liked === true).length;
       const n_dislikes = post_rxns.filter((f) => f.is_liked === false).length;
+
       const n_replies = props.posts.filter(
         (f) => f.parent_post_id === post_id
       ).length;
+
       score = n_likes + n_replies * 2;
       if (n_dislikes > n_likes) {
-        score -= 15;
+        score -= 2;
         score = score < 0 ? 0 : score;
       }
-      n_data.push(score);
+      if (score === 0) {
+        // Do not display posts with 0 score
+        labels = labels.filter((id) => id !== post_id);
+      } else {
+        n_data.push(score);
+      }
     }
 
     const red_bg_color = "rgba(255, 99, 132, 0.2)";
@@ -59,26 +68,26 @@ export default function PopularPostsBar(props) {
     return data;
   };
 
-    const options = {
-      indexAxis: "y",
-      // Elements options apply to all of the options unless overridden in a dataset
-      // In this case, we are setting the border of each horizontal bar to be 2px wide
-      elements: {
-        bar: {
-          borderWidth: 2,
-        },
+  const options = {
+    indexAxis: "y",
+    // Elements options apply to all of the options unless overridden in a dataset
+    // In this case, we are setting the border of each horizontal bar to be 2px wide
+    elements: {
+      bar: {
+        borderWidth: 2,
       },
-      responsive: true,
-      plugins: {
-        legend: {
-          position: "right",
-        },
-        title: {
-          display: false,
-          text: "Chart.js Horizontal Bar Chart",
-        },
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "right",
       },
-    };
+      title: {
+        display: false,
+        text: "Chart.js Horizontal Bar Chart",
+      },
+    },
+  };
 
   return (
     <>
