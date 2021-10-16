@@ -137,13 +137,6 @@ graphql.root = {
     user.first_name = args.input.first_name;
     user.last_name = args.input.last_name;
     user.email = args.input.email;
-    // if (args.input.password) {
-    //   const hash = await argon2.hash(args.input.password, {
-    //     type: argon2.argon2id,
-    //   });
-    //   user.password_hash = hash;
-    // }
-    // TODO img
     await user.save();
 
     return user;

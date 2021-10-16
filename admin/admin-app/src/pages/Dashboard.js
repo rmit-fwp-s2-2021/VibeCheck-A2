@@ -18,7 +18,6 @@ export default function Dashboard() {
     const users = await getUsers();
     setUsers(users);
     const posts = await getPosts();
-    console.log(posts);
     setPosts(posts);
   };
 

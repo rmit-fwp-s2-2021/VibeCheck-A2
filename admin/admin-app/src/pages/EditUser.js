@@ -40,9 +40,6 @@ export default function EditUser() {
     setFields({ ...fields, [event.target.name]: event.target.value });
   };
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  }
 
   const handleFileChange = (event) => {
     event.preventDefault();
@@ -54,22 +51,13 @@ export default function EditUser() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validate form and if invalid do not contact API.
 
-    // const form_data = new FormData();
     const user = {
       first_name: fields.first_name,
       last_name: fields.last_name,
       email: fields.email
     }
-    // form_data.set("first_name", fields.first_name);
-    // form_data.set("last_name", fields.last_name);
-    // if (img != null) {
-    //   form_data.set("img", img);
-    // }
-    if(password !== ''){
-      user.password = password;
-    }
+
     const response = await updateUser(fields.username, fields.first_name, fields.last_name, fields.email);
     // Show success message.
     setMessage(<><strong>{profile.first_name} {profile.last_name}</strong> profile has been updated successfully.</>);
@@ -78,39 +66,6 @@ export default function EditUser() {
     history.push("/users");
   };
 
-  const handleValidation = () => {
-    // TODO ?
-  };
-
-  const trimFields = () => {
-    const trimmedFields = {};
-    Object.keys(fields).map((key) => (trimmedFields[key] = fields[key].trim()));
-    setFields(trimmedFields);
-
-    return trimmedFields;
-  };
-
-  const trimFieldsEmptyToNull = () => {
-    const trimmedFields = {};
-
-    for (const [key, value] of Object.entries(fields)) {
-      let field = value;
-
-      // If value is not null trim the field.
-      if (field !== null) {
-        field = field.trim();
-
-        // If the trimmed field is empty make it null.
-        if (field.length === 0) field = null;
-      }
-
-      trimmedFields[key] = field;
-    }
-
-    setFieldsNullToEmpty(trimmedFields);
-
-    return trimmedFields;
-  };
 
   if (profile === null || fields === null) return null;
 
@@ -174,17 +129,6 @@ export default function EditUser() {
                   must be at least 6 characters
                 </small>
               </label>
-              {/* <input
-                type="password"
-                name="password"
-                id="password"
-                className="form-control"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-              {errors.password && (
-                <div className="text-danger">{password}</div>
-              )} */}
             </div>
             <div className="form-group">
               <input
@@ -210,9 +154,6 @@ export default function EditUser() {
                 id="img"
                 onChange={handleFileChange}
               />
-              {fields.img_url != null && img_preview === null && (
-                <img src={fields.img_url} />
-              )}
               {img_preview && <img src={img_preview} />}
             </div>
           </div>

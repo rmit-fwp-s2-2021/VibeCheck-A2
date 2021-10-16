@@ -27,7 +27,6 @@ Start the admin-backend (GRAPHQL API) first and then the admin-app (React fronte
 </ul>
 <br>
 
-## Admin functionalities
 React-Chart.Js was used to display graphs.
 <ul>
 <li>Admin can view popular posts. Posts are ranked by a popularity score which is measured by likes/dislikes and replies. <br>Each like increases point by 1. Each reply increases point by 2. If post has more dislikes than likes 2 points are deducted from score</li>

@@ -11,17 +11,20 @@ export default function UserFollowedBar(props) {
     for (const username of labels) {
       let count = 0;
       for (const user of users) {
+        // If user is following anyone
         if (user.userFollows.length !== 0) {
           const recepients = user.userFollows.map((x) => x.user_recepient);
-          // Check if anyone is following current label(user).
+          console.log(recepients);
+          // Check if user is following current label(user).
           if (recepients.includes(username)) {
             count++;
-            n_data.push(count);
           }
         }
       }
+      // Incremented count or 0 is added if no followings.
+      n_data.push(count);
     }
-    console.log(n_data);
+
     const red_bg_color = "rgba(255, 99, 132, 0.2)";
     const blue_bg_color = "rgba(54, 162, 235, 0.2)";
     const bg_colors = [];
