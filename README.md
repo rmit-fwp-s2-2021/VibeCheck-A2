@@ -1,5 +1,5 @@
 # VibeCheck-A2
-Full Stack Development application for Further Web Programming semester 2 2021.
+Full Stack application for Further Web Programming semester 2 2021. This is a social networking site for students of RMIT.
 
 ## How to run
 After cloning, install dependencies with
@@ -7,6 +7,15 @@ After cloning, install dependencies with
 
 Run the api first and then the frontend with 
 <code>npm start</code>
+
+## What I learned
+<ul>
+  <li>How to use built-in and custom React hooks. </li>
+  <li>How to convert class components to functional components.</li>
+  <li>How to build a CRUD app with Node and GraphQL.</li>
+  <li>How to use Chart.js to display analytics.</li>
+  <li>How to build a REST Api with Node.js. </li>
+</ul>
 
 ## App Architecure
 ![](architecture.PNG)
